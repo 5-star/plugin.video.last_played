@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <setting id="list_size" label="30001" type="number" default=10 />
+    <setting id="show_others" label="30007" type="bool" default="true" />
+</settings>
+

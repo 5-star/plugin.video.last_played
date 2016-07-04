@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+
+msgctxt "#30001"
+msgid "Number of lines"
+msgstr "Numero de linhas da lista"
+
+msgctxt "#30002"
+msgid "Last Movies"
+msgstr "Ultimos Filmes"
+
+msgctxt "#30003"
+msgid "Last Episodes"
+msgstr "Ultimos Episodios"
+
+msgctxt "#30004"
+msgid "Last Music Videos"
+msgstr "Ultimos Videos de Musica"
+
+msgctxt "#30005"
+msgid "Last Songs"
+msgstr "Ultimas Musicas"
+
+msgctxt "#30006"
+msgid "Addon"
+msgstr "Outros"
+
+msgctxt "#30007"
+msgid "Show Others"
+msgstr "Mostrar outros"
