@@ -13,7 +13,7 @@
     <summary lang="pt">Ultimos Vistos (todas as fontes)</summary>
     <description lang="en">List of the last movies, episodes and music played, including streaming sources from any addon</description>
     <description lang="pt">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
-    <disclaimer lang="en">I am not responsible if your house is on fire, if your kodi runs away with another kodi or anything else that may happen</disclaimer>
+    <disclaimer lang="en"></disclaimer>
     <platform>all</platform>
     <license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
     <source>https://github.com/rodrigl/plugin.video.last_viewed_all</source>
