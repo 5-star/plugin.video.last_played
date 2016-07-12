@@ -14,9 +14,9 @@ addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
 menu = args.get('menu', None)
 list_size = int(addon.getSetting('list_size'))
-show_others = addon.getSetting('show_others')
+show_addons = addon.getSetting('show_addons')
 lang = addon.getLocalizedString
-
+	
 def openDB():	
 	dbType = 'sqlite'	
 	dbName = 'MyVideos'
@@ -83,13 +83,14 @@ def list_others():
 	try:
 		db = openDB()
 		cursor = db.cursor()
-		cursor.execute('SELECT strFilename, strpath FROM files INNER JOIN path on files.idpath=path.idpath where strhash is null Order By lastPlayed desc LIMIT ' + str(list_size))
+		cursor.execute('SELECT strFilename, strpath, files.dateadded, lastplayed FROM files INNER JOIN path on files.idpath=path.idpath where strhash is null Order By lastPlayed desc LIMIT ' + str(list_size))
 		for row in cursor.fetchall():
-			title = row[0]
+			title = row[2]
+			if title=='' or title=='None' or title is None: title=row[3]
 			li = ListItem(label=title)
 			li.setInfo(type="Video", infoLabels={ "Title": title})
 			li.setProperty('IsPlayable', 'true')
-			addDirectoryItem(addon_handle, row[1]+title, li, False)
+			addDirectoryItem(addon_handle, row[1]+row[0], li, False)
 		endOfDirectory(addon_handle)
 	except: 
 		pass
@@ -101,7 +102,7 @@ if menu is None:
 	addDirectoryItem(addon_handle, url({'menu': 'episodes'}), ListItem(lang(30003), iconImage=imgPath+'/resources/episodes.png'), True)
 	addDirectoryItem(addon_handle, url({'menu': 'musicvideos'}), ListItem(lang(30004), iconImage=imgPath+'/resources/musicvideos.png'), True)
 	addDirectoryItem(addon_handle, url({'menu': 'songs'}), ListItem(lang(30005), iconImage=imgPath+'/resources/songs.png'), True)
-	if show_others == "true":
+	if show_addons == "true":
 		addDirectoryItem(addon_handle, url({'menu': 'others'}), ListItem(lang(30006), iconImage=imgPath+'/resources/others.png'), True)
 	endOfDirectory(addon_handle)
 elif menu[0] == 'movies':

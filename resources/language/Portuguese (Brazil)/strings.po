@@ -22,9 +22,9 @@ msgid "Last Songs"
 msgstr "Ultimas Musicas"
 
 msgctxt "#30006"
-msgid "Addon"
-msgstr "Outros"
+msgid "Last from Addons"
+msgstr "Ultimos de Addons"
 
 msgctxt "#30007"
-msgid "Show Others"
-msgstr "Mostrar outros"
+msgid "Show Addons"
+msgstr "Mostrar Addons"
