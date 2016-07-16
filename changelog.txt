@@ -1,2 +1,3 @@
+[B]1.0.3[/B] - Improve metadata info. Aloow item removal. Make it kodi repo compliant
 [B]1.0.2[/B] - Set media type on list items
 [B]1.0.1[/B] - Initial Release

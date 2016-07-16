@@ -28,3 +28,7 @@ msgstr ""
 msgctxt "#30007"
 msgid "Show Addons"
 msgstr ""
+
+msgctxt "#30008"
+msgid "Remove from list"
+msgstr ""

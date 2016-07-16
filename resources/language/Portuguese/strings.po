@@ -28,3 +28,7 @@ msgstr "Ultimos de Addons"
 msgctxt "#30007"
 msgid "Show Addons"
 msgstr "Mostrar Addons"
+
+msgctxt "#30008"
+msgid "Remove from list"
+msgstr "Remover da lista"
