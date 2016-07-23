@@ -32,3 +32,19 @@ msgstr "Mostrar Addons"
 msgctxt "#30008"
 msgid "Remove from list"
 msgstr "Remover da lista"
+
+msgctxt "#30009"
+msgid "Group Addons"
+msgstr "Agrupar Addons"
+
+msgctxt "#30010"
+msgid "Show Date"
+msgstr "Mostrar Data"
+
+msgctxt "#30011"
+msgid "Show Time"
+msgstr "Mostrar Hora"
+
+msgctxt "#30012"
+msgid "Other sources"
+msgstr "Outras fontes"

@@ -9,6 +9,8 @@ import xbmcvfs
 addon = xbmcaddon.Addon()
 profile = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 list_size = int(addon.getSetting('list_size'))
+newline="ignore"
+lang = addon.getLocalizedString
 
 class KodiPlayer(xbmc.Player):
 	def __init__(self, *args, **kwargs):
@@ -47,43 +49,67 @@ class KodiPlayer(xbmc.Player):
 					data = response['result']
 				else: error = response['error']
 		return (result, data, error)
+	 
+	def videoEnd(self):
+		global newline
+		if newline != 'ignore':
+			retry=1
+			addon=''
+			while addon=='' and retry<50:
+				addon = xbmc.getInfoLabel('ListItem.Path')
+				retry=retry+1
+				time.sleep(0.1)
+			txtfile = profile + "list.txt"
+			if not os.path.exists(profile):
+				os.makedirs(profile)
+			if xbmcvfs.exists(txtfile):
+				with open(txtfile) as f:
+					lines = f.readlines()
+			else: lines = {}
+			with open(txtfile, 'w') as f:
+				line = newline.split(chr(9))
+				list_count=1
+				if addon[0:4]=='http':
+					addon='plugin://plugin.video.last_played/'
+					f.write(newline+chr(9)+addon+chr(10))
+				else:
+					if addon=='': addon=lang(30012)
+					dt=time.strftime("%Y-%m-%d")
+					tm=time.strftime("%H:%M:%S")
+					f.write(newline+chr(9)+addon+chr(9)+dt+chr(9)+tm+chr(10))
+				for line in lines:
+					lin = line.split(chr(9))
+					if len(lin)>2 and list_count<(list_size+20):
+						if lin[1]!=line[1]:
+							f.write(line)
+							list_count=list_count+1
+		newline="ignore"
 
 	def onPlayBackStarted(self):
 		request = self._buildRequest('Player.GetItem', {'playerid' : 1, 'properties' : ['file', 'title', 'year', 'thumbnail', 'fanart']})
 		result, data = self._query(request)[:2]
+		global newline
+		newline = 'ignore'
 		if ( result and 'item' in data and data['item'] ):
 			item = data['item']
-			pu=xbmc.Player().getVideoInfoTag().getPictureURL()
-			if pu=='' and item['type']!='musicvideo':
-				xbmc.log("#############item '%s'" % str(item), 3)
+			if item['file'][0:4]=='http' or item['type']=='unknown':
 				getTitle=xbmc.Player().getVideoInfoTag().getTitle().strip()
 				if getTitle=='': getTitle=item['title']
 				if getTitle=='': getTitle=item['label']
 				if getTitle != '':
 					getYear = item['year']
 					if getYear > 0: getTitle = getTitle + " (" + str(getYear) + ")"
-					txtfile = profile + "list.txt"
 				if item['thumbnail']=='': img = item['fanart'].strip()
 				else: img = item['thumbnail'].strip()
 				img = img.rstrip('/').replace('image://','')
 				img = urllib.unquote(img)
-				if not os.path.exists(profile):
-					os.makedirs(profile)
-				if xbmcvfs.exists(txtfile):
-					with open(txtfile) as f:
-						lines = f.readlines()
-				else: lines = {}
-				with open(txtfile, 'w') as f:
-					url=item['file'].strip()
-					list_count=1
-					f.write(getTitle+chr(9)+url+chr(9)+img+chr(10))
-					for line in lines:
-						lin = line.split(chr(9))
-						if len(lin)>2 and list_count<(list_size+20):
-							#xbmc.log("#############item[file] '%s'" % item['file'].strip(), 3)
-							if lin[1]!=url:
-								f.write(line)
-								list_count=list_count+1
+				newline = getTitle+chr(9)+item['file'].strip()+chr(9)+img
+
+	def onPlayBackEnded(self):
+		self.videoEnd()
+
+	def onPlayBackStopped(self):
+		self.videoEnd()
 
 player_monitor = KodiPlayer()
 

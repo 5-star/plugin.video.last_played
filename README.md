@@ -15,5 +15,7 @@ Installation
  
 Release history
 ---------------
-  * 2016-06-28 v 1.0.2 Set media type on list items
-  * 2016-06-10 v 1.0.1 Initial release
+[B]1.0.4[/B] - New options: Split by addon and display date and time 
+[B]1.0.3[/B] - Improve metadata info. Aloow item removal. Make it kodi repo compliant
+[B]1.0.2[/B] - Set media type on list items
+[B]1.0.1[/B] - Initial Release
