@@ -56,7 +56,7 @@ def list_addons(addon):
 		nbr=0
 		for line in lines:
 			item = line.split(chr(9))
-			if len(item)>2 and nbr<list_size and (item[3]==addon or addon=='*'):
+			if len(item)>3 and nbr<list_size and (item[3]==addon or addon=='*'):
 				desc=''
 				if show_date == "true" and len(item)>4 : desc = desc + item[4].strip() + ' '
 				if show_time == "true" and len(item)>5: desc = desc + item[5].strip() + ' '
