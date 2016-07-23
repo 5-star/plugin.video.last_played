@@ -89,20 +89,21 @@ if menu is None:
 					lines = f.readlines()
 					for line in lines:
 						fld = line.split(chr(9))
-						ad = fld[3]
-						ads = ad.split("/")
-						if len(ads) > 2: ad = ads[2]
-						if ad not in addons:
-							addons.append(ad)
-							try:
-								la = xbmcaddon.Addon(ad)
-								nm = la.getAddonInfo('name')
-								ic = la.getAddonInfo('icon')
-							except:
-								nm = ad
-								ic = imgPath+'/resources/addons.png'
-							addDirectoryItem(addon_handle, url({'menu': fld[3]}), ListItem(nm, iconImage=ic), True)
-	endOfDirectory(addon_handle)
+						if len(fld)>5:
+							ad = fld[3]
+							ads = ad.split("/")
+							if len(ads) > 2: ad = ads[2]
+							if ad not in addons:
+								addons.append(ad)
+								try:
+									la = xbmcaddon.Addon(ad)
+									nm = la.getAddonInfo('name')
+									ic = la.getAddonInfo('icon')
+								except:
+									nm = ad
+									ic = imgPath+'/resources/addons.png'
+								addDirectoryItem(addon_handle, url({'menu': fld[3]}), ListItem(nm, iconImage=ic), True)
+		endOfDirectory(addon_handle)
 elif menu[0] == 'movies':
 	list_items(get_items("VideoLibrary.GetMovies","movies"),'movies')
 elif menu[0] == 'episodes':
