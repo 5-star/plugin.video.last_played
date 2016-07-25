@@ -7,7 +7,7 @@ import xbmc
 import xbmcplugin
 import xbmcaddon
 import xbmcvfs
-from xbmcgui import ListItem
+from xbmcgui import ListItem, Window
 from xbmcplugin import addDirectoryItem, endOfDirectory
 
 addon = xbmcaddon.Addon()
@@ -19,6 +19,7 @@ show_addons = addon.getSetting('show_addons')
 group_addons = addon.getSetting('group_addons')
 show_date = addon.getSetting('show_date')
 show_time = addon.getSetting('show_time')
+enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
 profile = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')).decode('utf-8')
@@ -47,7 +48,7 @@ def get_items(pMethod, pResult):
 	items = jsonrpc(query)['result'].get(pResult, [])
 	return items
 
-def list_addons(addon):
+def list_addonitems(addon):
 	xbmcplugin.setContent(addon_handle, "movies")
 	txtfile = profile + "list.txt"
 	if xbmcvfs.exists(txtfile):
@@ -71,6 +72,32 @@ def list_addons(addon):
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
 		endOfDirectory(addon_handle)
+
+def list_addons():
+	if group_addons == "true":
+		addDirectoryItem(addon_handle, url({'menu': '*'}), ListItem(lang(30006), iconImage=imgPath+'/resources/others.png'), True)
+	else:
+		txtfile = profile + "list.txt"
+		if xbmcvfs.exists(txtfile):
+			addons = []
+			with open(txtfile) as f:
+				lines = f.readlines()
+				for line in lines:
+					fld = line.split(chr(9))
+					if len(fld)>5:
+						ad = fld[3]
+						ads = ad.split("/")
+						if len(ads) > 2: ad = ads[2]
+						if ad not in addons:
+							addons.append(ad)
+							try:
+								la = xbmcaddon.Addon(ad)
+								nm = la.getAddonInfo('name')
+								ic = la.getAddonInfo('icon')
+							except:
+								nm = ad
+								ic = imgPath+'/resources/addons.png'
+							addDirectoryItem(addon_handle, url({'menu': fld[3]}), ListItem(nm, iconImage=ic), True)
 		
 if menu is None:
 	xbmcplugin.setContent(addon_handle, "menu")
@@ -79,31 +106,15 @@ if menu is None:
 	addDirectoryItem(addon_handle, url({'menu': 'musicvideos'}), ListItem(lang(30004), iconImage=imgPath+'/resources/musicvideos.png'), True)
 	addDirectoryItem(addon_handle, url({'menu': 'songs'}), ListItem(lang(30005), iconImage=imgPath+'/resources/songs.png'), True)
 	if show_addons == "true":
-		if group_addons == "true":
-			addDirectoryItem(addon_handle, url({'menu': '*'}), ListItem(lang(30006), iconImage=imgPath+'/resources/others.png'), True)
+		list_addons()
+	if enable_debug	== "true":
+		addDirectoryItem(addon_handle, url({'menu': 'showlist'}), ListItem(lang(30014)), True)
+		txtfile = profile + "list.txt"
+		if xbmcvfs.exists(txtfile):
+			addDirectoryItem(addon_handle, url({'menu': 'deletelist'}), ListItem(lang(30015)), True)
 		else:
-			txtfile = profile + "list.txt"
-			if xbmcvfs.exists(txtfile):
-				addons = []
-				with open(txtfile) as f:
-					lines = f.readlines()
-					for line in lines:
-						fld = line.split(chr(9))
-						if len(fld)>5:
-							ad = fld[3]
-							ads = ad.split("/")
-							if len(ads) > 2: ad = ads[2]
-							if ad not in addons:
-								addons.append(ad)
-								try:
-									la = xbmcaddon.Addon(ad)
-									nm = la.getAddonInfo('name')
-									ic = la.getAddonInfo('icon')
-								except:
-									nm = ad
-									ic = imgPath+'/resources/addons.png'
-								addDirectoryItem(addon_handle, url({'menu': fld[3]}), ListItem(nm, iconImage=ic), True)
-		endOfDirectory(addon_handle)
+			addDirectoryItem(addon_handle, url({'menu': 'deletelist'}), ListItem(lang(30016)), True)
+	endOfDirectory(addon_handle)
 elif menu[0] == 'movies':
 	list_items(get_items("VideoLibrary.GetMovies","movies"),'movies')
 elif menu[0] == 'episodes':
@@ -127,5 +138,18 @@ elif menu[0] == 'remove':
 						f.write(line)
 					nbr=nbr+1
 		xbmc.executebuiltin("ActivateWindow(Videos,plugin://plugin.video.last_played?menu=addons)")
+elif menu[0] == 'showlist':
+	txtfile = profile + "list.txt"
+	if xbmcvfs.exists(txtfile):
+		with open(txtfile) as f:
+			lines = f.readlines()
+			for line in lines:
+				addDirectoryItem(addon_handle, url(""), ListItem(str(line)), False)
+		endOfDirectory(addon_handle)
+elif menu[0] == 'deletelist':
+	txtfile = profile + "list.txt"
+	if xbmcvfs.exists(txtfile):
+		xbmcvfs.delete(txtfile)
+
 else:
-	list_addons(menu[0])
+	list_addonitems(menu[0])

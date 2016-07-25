@@ -48,3 +48,19 @@ msgstr "Mostrar Hora"
 msgctxt "#30012"
 msgid "Other sources"
 msgstr "Outras fontes"
+
+msgctxt "#30013"
+msgid "Enable debug"
+msgstr "Ativar debug"
+
+msgctxt "#30014"
+msgid "Show Addon History List"
+msgstr "Mostrar Lista de Histórico de Addons"
+
+msgctxt "#30015"
+msgid "Delete Addon History List"
+msgstr "Apagar Lista de Histórico de Addons"
+
+msgctxt "#30016"
+msgid "*** There is no Addon History ***"
+msgstr "*** Não existe Histórico de Addons ***"

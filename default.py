@@ -9,6 +9,7 @@ import xbmcvfs
 addon = xbmcaddon.Addon()
 profile = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 list_size = int(addon.getSetting('list_size'))
+enable_debug = addon.getSetting('enable_debug')
 newline="ignore"
 lang = addon.getLocalizedString
 
@@ -52,6 +53,7 @@ class KodiPlayer(xbmc.Player):
 	 
 	def videoEnd(self):
 		global newline
+		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 56 "+newline, 3)
 		if newline != 'ignore':
 			retry=1
 			addon=''
@@ -59,6 +61,7 @@ class KodiPlayer(xbmc.Player):
 				addon = xbmc.getInfoLabel('ListItem.Path')
 				retry=retry+1
 				time.sleep(0.1)
+			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 64 "+addon, 3)
 			txtfile = profile + "list.txt"
 			if not os.path.exists(profile):
 				os.makedirs(profile)
@@ -67,8 +70,9 @@ class KodiPlayer(xbmc.Player):
 					lines = f.readlines()
 			else: lines = {}
 			with open(txtfile, 'w') as f:
-				line = newline.split(chr(9))
+				#line = newline.split(chr(9))
 				list_count=1
+				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 75 "+newline, 3)
 				if addon[0:4]=='http':
 					addon='plugin://plugin.video.last_played/'
 					f.write(newline+chr(9)+addon+chr(10))
@@ -88,6 +92,7 @@ class KodiPlayer(xbmc.Player):
 	def onPlayBackStarted(self):
 		request = self._buildRequest('Player.GetItem', {'playerid' : 1, 'properties' : ['file', 'title', 'year', 'thumbnail', 'fanart']})
 		result, data = self._query(request)[:2]
+		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 95 "+str(data), 3)
 		global newline
 		newline = 'ignore'
 		if ( result and 'item' in data and data['item'] ):
@@ -104,6 +109,7 @@ class KodiPlayer(xbmc.Player):
 				img = img.rstrip('/').replace('image://','')
 				img = urllib.unquote(img)
 				newline = getTitle+chr(9)+item['file'].strip()+chr(9)+img
+				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 112 "+newline, 3)
 
 	def onPlayBackEnded(self):
 		self.videoEnd()
