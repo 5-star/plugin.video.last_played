@@ -38,6 +38,7 @@ def list_items(items, type):
 		if show_time == "true": desc = desc + item['lastplayed'][11:18] + ' '
 		desc=desc + item['title']
 		li = ListItem(label=desc)
+		# TODO SET PROPER MEDIA TYPE
 		li.setInfo(type="Video", infoLabels={"mediatype": 'episode'})
 		li.setProperty("type", "episode")
 		addDirectoryItem(addon_handle, item['file'], li, False, len(items))
