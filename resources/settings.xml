@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <setting id="list_size" label="30001" type="number" default=10 />
+    <setting id="show_library" label="30017" type="bool" default="true" />
+    <setting id="show_music" label="30018" type="bool" default="false" />
     <setting id="show_addons" label="30007" type="bool" default="true" />
     <setting id="group_addons" label="30009" type="bool" default="false" />
     <setting id="show_date" label="30010" type="bool" default="false" />
     <setting id="show_time" label="30011" type="bool" default="false" />
+	<setting id="custom_path_enable" type="bool" label="30019" default="false"/>
+	<setting id="custom_path" enable="eq(-1,true)" visible="eq(-1,true)" subsetting="true" type="folder" label="30020" default="" />
     <setting id="enable_debug" label="30013" type="bool" default="false" />
 </settings>
 

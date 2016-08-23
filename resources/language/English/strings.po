@@ -26,7 +26,7 @@ msgid "Last from Addons"
 msgstr ""
 
 msgctxt "#30007"
-msgid "Show Addons"
+msgid "Show Non-Library"
 msgstr ""
 
 msgctxt "#30008"
@@ -34,7 +34,7 @@ msgid "Remove from list"
 msgstr ""
 
 msgctxt "#30009"
-msgid "Group Addons"
+msgid "Group all Addons on single list"
 msgstr ""
 
 msgctxt "#30010"
@@ -63,4 +63,20 @@ msgstr ""
 
 msgctxt "#30016"
 msgid "*** There is no Addon History ***"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Show Library Movies and Episodes"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Show Music Videos and Songs"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Store list in a custom path"
+msgstr ""
+
+msgctxt "#30020"
+msgid "List location"
 msgstr ""

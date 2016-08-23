@@ -34,8 +34,8 @@ msgid "Remove from list"
 msgstr "Remover da lista"
 
 msgctxt "#30009"
-msgid "Group Addons"
-msgstr "Agrupar Addons"
+msgid "Group all Addons on single list"
+msgstr "Agrupar Addons numa única lista"
 
 msgctxt "#30010"
 msgid "Show Date"
@@ -64,3 +64,19 @@ msgstr "Apagar Lista de Histórico de Addons"
 msgctxt "#30016"
 msgid "*** There is no Addon History ***"
 msgstr "*** Não existe Histórico de Addons ***"
+
+msgctxt "#30017"
+msgid "Show Library Movies and Episodes"
+msgstr "Mostrar Filmes e Episódios da Biblioteca"
+
+msgctxt "#30018"
+msgid "Show Music Videos and Songs"
+msgstr "Mostrar Videos de música e Temas"
+
+msgctxt "#30019"
+msgid "Store list in a custom path"
+msgstr "Colocar lista em pasta escolhida"
+
+msgctxt "#30020"
+msgid "List location"
+msgstr "Localização da Lista"

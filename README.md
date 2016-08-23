@@ -15,11 +15,14 @@ Open the list of last played, select the line to remove, and choose "Remove from
 Settings:
 ---------
 Number of lines: How many lines to display on screen
-Show Addons: Choose wether to list or not what was played using addons
-Group Addons (ON): It will group what was played on all addons on a single list
+Show Library Movies and Episodes: Switch on or off displaying Library movies and episodes
+Show Music Videos and Songs: Switch on or off displaying Library music videos and songs
+Show Non Library: Switch on or off displaying what was played using addons
+Group Addons (ON): It will group what was played using addons on a single list
 Group Addons (OFF): It will show a list of all addons used, and when one is selected shows what was played with that addon
 Show Date: Display for each item the date when it was played
 Show Time: Display time of play
+Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history
 Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors
 
 Installation
@@ -34,6 +37,7 @@ b) Or install it manually following these steps
  
 Release history
 ---------------
+1.0.6 - Configuration options
 1.0.5 - Add debug options 
 1.0.4 - New options: Split by addon and display date and time 
 1.0.3 - Improve metadata info. Aloow item removal. Make it kodi repo compliant

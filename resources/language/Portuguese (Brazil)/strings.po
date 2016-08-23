@@ -63,4 +63,4 @@ msgstr "Apagar Lista de Histórico de Addons"
 
 msgctxt "#30016"
 msgid "*** There is no Addon History ***"
-msgstr "*** Não Histórico de Addons ***"
+msgstr "*** Não existe Histórico de Addons ***"

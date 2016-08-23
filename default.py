@@ -7,7 +7,12 @@ import xbmcaddon
 import xbmcvfs
 
 addon = xbmcaddon.Addon()
-profile = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
+enable_debug = addon.getSetting('enable_debug')
+if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom_path') != "":
+	txtpath = addon.getSetting('custom_path').decode("utf-8")
+else:
+	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
+txtfile = txtpath + "list.txt"
 list_size = int(addon.getSetting('list_size'))
 enable_debug = addon.getSetting('enable_debug')
 newline="ignore"
@@ -62,31 +67,32 @@ class KodiPlayer(xbmc.Player):
 				retry=retry+1
 				time.sleep(0.1)
 			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 64 "+addon, 3)
-			txtfile = profile + "list.txt"
-			if not os.path.exists(profile):
-				os.makedirs(profile)
+			#if not os.path.exists(txtpath):
+			#	os.makedirs(txtpath)
 			if xbmcvfs.exists(txtfile):
-				with open(txtfile) as f:
-					lines = f.readlines()
+				f = xbmcvfs.File(txtfile)
+				lines = f.readBytes().decode("utf-8")
+				f.close()
 			else: lines = {}
-			with open(txtfile, 'w') as f:
-				#line = newline.split(chr(9))
-				list_count=1
-				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 75 "+newline, 3)
-				if addon[0:4]=='http':
-					addon='plugin://plugin.video.last_played/'
-					f.write(newline+chr(9)+addon+chr(10))
-				else:
-					if addon=='': addon=lang(30012)
-					dt=time.strftime("%Y-%m-%d")
-					tm=time.strftime("%H:%M:%S")
-					f.write(newline+chr(9)+addon+chr(9)+dt+chr(9)+tm+chr(10))
-				for line in lines:
-					lin = line.split(chr(9))
-					if len(lin)>2 and list_count<(list_size+20):
-						if lin[1]!=line[1]:
-							f.write(line)
-							list_count=list_count+1
+			f = xbmcvfs.File(txtfile, 'w')
+			#line = newline.split(chr(9))
+			list_count=1
+			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played 75 "+newline, 3)
+			if addon[0:4]=='http':
+				addon='plugin://plugin.video.last_played/'
+				f.write(str(newline+chr(9)+addon+chr(10)))
+			else:
+				if addon=='': addon=lang(30012)
+				dt=time.strftime("%Y-%m-%d")
+				tm=time.strftime("%H:%M:%S")
+				f.write(str(newline+chr(9)+addon+chr(9)+dt+chr(9)+tm+chr(10)))
+			for line in lines.split(chr(10)):
+				lin = line.split(chr(9))
+				if len(lin)>2 and list_count<(list_size+20):
+					if lin[1]!=line[1]:
+						f.write(str(line+chr(10)))
+						list_count=list_count+1
+			f.close()
 		newline="ignore"
 
 	def onPlayBackStarted(self):
