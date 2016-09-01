@@ -1,4 +1,5 @@
 import os, re, time
+import os, re, time
 import json
 import urllib, urllib2
 import xbmc
@@ -18,6 +19,40 @@ fivestar = addon.getSetting('fivestar')
 enable_debug = addon.getSetting('enable_debug')
 newline={}
 lang = addon.getLocalizedString
+
+# Builds JSON request with provided json data
+def buildRequest(method, params, jsonrpc='2.0', rid='1'):
+	request = { 'jsonrpc' : jsonrpc, 'method' : method, 'params' : params, 'id' : rid, }
+	return request
+
+# Checks JSON response and returns boolean result
+def checkReponse(response):
+	result = False
+	if ( ('result' in response) and ('error' not in response) ):
+		result = True
+	return result
+
+# Executes JSON request and returns the JSON response
+def JSexecute(request):
+	request_string = json.dumps(request)
+	response = xbmc.executeJSONRPC(request_string)
+	if ( response ):
+		response = json.loads(response)
+	return response
+
+# Performs single JSON query and returns result boolean, data dictionary and error string
+def JSquery(request):
+	result = False
+	data = {}
+	error = ''
+	if ( request ):
+		response = JSexecute(request)
+		if ( response ):
+			result = checkReponse(response)
+			if ( result ):
+				data = response['result']
+			else: error = response['error']
+	return (result, data, error)
 
 class KodiPlayer(xbmc.Player):
 	def __init__(self, *args, **kwargs):
@@ -41,19 +76,19 @@ class KodiPlayer(xbmc.Player):
 		episode = ""
 		if wid>0:
 			if typ=="M":
-				request = self._buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
-				result, data = self.jsonQuery(request)[:2]
+				request = buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
+				result, data = JSquery(request)[:2]
 				if ( result and 'moviedetails' in data ):
 					imdbId = data['moviedetails']["imdbnumber"]
 					orgTitle = data['moviedetails']["originaltitle"]
 			elif typ=="S":
-				request = self._buildRequest('VideoLibrary.GetEpisodeDetails', {'episodeid' : wid, 'properties' : ['tvshowid', 'season', 'episode']})
-				result, data = self.jsonQuery(request)[:2]
+				request = buildRequest('VideoLibrary.GetEpisodeDetails', {'episodeid' : wid, 'properties' : ['tvshowid', 'season', 'episode']})
+				result, data = JSquery(request)[:2]
 				if ( result and 'episodedetails' in data ):
 					season = data['episodedetails']["season"]
 					episode = data['episodedetails']["episode"]
-					request = self._buildRequest('VideoLibrary.GetTvShowDetails', {'tvshowid' : data['episodedetails']["tvshowid"], 'properties' : ['imdbnumber', 'originaltitle']})
-					result, data = self.jsonQuery(request)[:2]
+					request = buildRequest('VideoLibrary.GetTvShowDetails', {'tvshowid' : data['episodedetails']["tvshowid"], 'properties' : ['imdbnumber', 'originaltitle']})
+					result, data = JSquery(request)[:2]
 					if ( result and 'tvshowdetails' in data ):
 						showTitle = data['tvshowdetails']["label"]
 						orgTitle = data['tvshowdetails']["originaltitle"]
@@ -81,44 +116,9 @@ class KodiPlayer(xbmc.Player):
 		request = urllib2.Request(url)
 		urllib2.urlopen(request)
 
-	# Checks JSON response and returns boolean result
-	def _checkReponse(self, response):
-		result = False
-		if ( ('result' in response) and ('error' not in response) ):
-			result = True
-		return result
-
-	# Executes JSON request and returns the JSON response
-	def _execute(self, request):
-		request_string = json.dumps(request)
-		response = xbmc.executeJSONRPC(request_string)
-		if ( response ):
-			response = json.loads(response)
-		return response
-
-	# Builds JSON request with provided json data
-	@staticmethod
-	def _buildRequest(self, method, params, jsonrpc='2.0', rid='1'):
-		request = { 'jsonrpc' : jsonrpc, 'method' : method, 'params' : params, 'id' : rid, }
-		return request
-
-	# Performs single JSON query and returns result boolean, data dictionary and error string
-	def jsonQuery(self, request):
-		result = False
-		data = {}
-		error = ''
-		if ( request ):
-			response = self.execute(request)
-			if ( response ):
-				result = self._checkReponse(response)
-				if ( result ):
-					data = response['result']
-				else: error = response['error']
-		return (result, data, error)
-
 	def onPlayBackStarted(self):
-		request = self._buildRequest('Player.GetItem', {'playerid' : 1, 'properties' : ['file', 'title', 'year', 'thumbnail', 'fanart']})
-		result, data = self.jsonQuery(request)[:2]
+		request = buildRequest('Player.GetItem', {'playerid' : 1, 'properties' : ['file', 'title', 'year', 'thumbnail', 'fanart']})
+		result, data = JSquery(request)[:2]
 		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start play) "+str(data), 3)
 		global newline
 		newline = {}
