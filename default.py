@@ -1,4 +1,4 @@
-import os, re, time
+import os, time
 import json
 import urllib, urllib2
 import xbmc
@@ -183,13 +183,16 @@ def videoEnd():
 class KodiPlayer(xbmc.Player):
 	def __init__(self, *args, **kwargs):
 		xbmc.Player.__init__(self)
-		
+
+	@classmethod
 	def onPlayBackStarted(self):
 		videoStart()
 
+	@classmethod
 	def onPlayBackEnded(self):
 		videoEnd()
 
+	@classmethod
 	def onPlayBackStopped(self):
 		videoEnd()
 
