@@ -2,12 +2,12 @@ plugin.video.last_played
 ------------------------
 Lists what was played most recently, allowing to resume watching directly from the addon.
 
-Before if you wanted to finish viewing something that you had to interrupt, you had to remember it and then search, or go through a number of menus to get back to where you were.
-With this addon just open it and it will display on top the last thing you watched. Click and it will resume playing directly from the addon.
+Before if you wanted to finish viewing something you stopped, you had to remember it and then search, or go through a number of menus to get back to where you were.
+Now just open this addon and it will display a list with the last things you watched. Click and it will resume playing directly from the addon.
 
 Usage
 -----
-When you start playing anything in KODI it will be added to the list of last played. Naturally, the only exception is TV.
+When you start playing anything in KODI it will be added to the list of last played.
 
 To remove from the played list something you watched:
 Open the list of last played, select the line to remove, and choose "Remove from list" form the context menu. 
@@ -15,13 +15,13 @@ Open the list of last played, select the line to remove, and choose "Remove from
 Settings:
 ---------
 Number of lines: How many lines to display on screen
-Show Library Movies and Episodes: Switch on or off displaying Library movies and episodes
-Show Music Videos and Songs: Switch on or off displaying Library music videos and songs
-Show Non Library: Switch on or off displaying what was played using addons
-Group Addons (ON): It will group what was played using addons on a single list
-Group Addons (OFF): It will show a list of all addons used, and when one is selected shows what was played with that addon
+Single List: Shows everything on a single list, no matter what or where is was played
+Group by Type: Display on separate groups Movies, Shows, Videos, etc
+Group by Source: Display separate groups for each addon used to play
+Number of lines on top: If grouping is active, display before the groups some of the last played movies or shows
 Show Date: Display for each item the date when it was played
 Show Time: Display time of play
+Play History at 5 Star Movies: The play history can be viewed privately on the www.5star.movies site
 Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history
 Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors
 
@@ -37,6 +37,7 @@ b) Or install it manually following these steps
  
 Release history
 ---------------
+1.0.7 - New list format and add 5star-movies
 1.0.6 - Configuration options
 1.0.5 - Add debug options 
 1.0.4 - New options: Split by addon and display date and time 

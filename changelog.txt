@@ -1,3 +1,5 @@
+[B]1.0.7[/B] - New list format and add 5star-movies
+[B]1.0.6[/B] - Configuration options
 [B]1.0.5[/B] - Add debug options 
 [B]1.0.4[/B] - New options: Split by addon and display date and time 
 [B]1.0.3[/B] - Improve metadata info. Aloow item removal. Make it kodi repo compliant

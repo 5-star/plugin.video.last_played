@@ -1,7 +1,7 @@
 import sys, os, re
 from datetime import datetime
 import json
-import urllib
+import urllib, urllib2
 import urlparse
 import xbmc
 import xbmcplugin
@@ -14,11 +14,12 @@ addon = xbmcaddon.Addon()
 addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
 menu = args.get('menu', None)
-list_size = int(addon.getSetting('list_size'))
-show_library = addon.getSetting('show_library')
-show_music = addon.getSetting('show_music')
-show_addons = addon.getSetting('show_addons')
-group_addons = addon.getSetting('group_addons')
+try: list_size = int(addon.getSetting('list_size'))
+except: list_size=0
+try: top_size = int(addon.getSetting('top_size'))
+except: top_size=0
+single_list = addon.getSetting('single_list')
+group_by = addon.getSetting('group_by')
 show_date = addon.getSetting('show_date')
 show_time = addon.getSetting('show_time')
 enable_debug = addon.getSetting('enable_debug')
@@ -27,44 +28,93 @@ if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom
 	txtpath = addon.getSetting('custom_path').decode("utf-8")
 else:
 	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
-txtfile = txtpath + "list.txt"
+txtfile = txtpath + "lastPlayed.json"
+oldfile = txtpath + "list.txt"
 imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')).decode('utf-8')
-	
+group_by_type=lang(30018)
+
 def url(pQuery):
 	return sys.argv[0] + '?' + urllib.urlencode(pQuery)
 
-def jsonrpc(query):
-	return json.loads(xbmc.executeJSONRPC(json.dumps(query, encoding='utf-8')))
-
-def list_items(items, type):
-	xbmcplugin.setContent(addon_handle, type)
-	for item in items:
-		desc=''
-		if show_date == "true": desc = desc + item['lastplayed'][0:10] + ' '
-		if show_time == "true": desc = desc + item['lastplayed'][11:18] + ' '
-		desc=desc + item['title']
-		li = ListItem(label=desc)
-		# TODO SET PROPER MEDIA TYPE
-		li.setInfo(type="Video", infoLabels={"mediatype": 'episode'})
-		li.setProperty("type", "episode")
-		addDirectoryItem(addon_handle, item['file'], li, False, len(items))
-	endOfDirectory(addon_handle)
-	
-def get_items(pMethod, pResult):
-	query = { "jsonrpc": "2.0", "method": pMethod, "id": 1, "params": { "properties": ["title", "file", "lastplayed" ], "sort": { "order": "descending", "method": "lastplayed" },  "limits": {"start" : 0, "end" : list_size } } }
-	items = jsonrpc(query)['result'].get(pResult, [])
-	return items
-
-def list_addonitems(addon):
+def list_items(selGroup, nbrLines):
 	xbmcplugin.setContent(addon_handle, "movies")
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
+		nbr=1
+		for line in json.load(f):
+			if nbr>nbrLines: break
+			if group_by == group_by_type: group = line["type"]
+			else: group = line["source"]
+			if len(line)>3 and (group==selGroup or selGroup=='*'):
+				nbr=nbr+1
+				desc=''
+				if show_date == "true": desc = desc + line["date"].strip() + ' '
+				if show_time == "true": desc = desc + line["time"].strip() + ' '
+				desc=desc + line["title"]
+				li = ListItem(label=desc)
+				li.setInfo(type="Video", infoLabels={ "Title": desc})
+				li.setProperty('IsPlayable', 'true')
+				command = []
+				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
+				li.addContextMenuItems(command)
+				li.setArt({ "poster" : line["thumbnail"].strip() })
+				li.setArt({ "thumbnail" : line["thumbnail"].strip() })
+				li.setArt({ "fanart" : line["fanart"].strip() })
+				addDirectoryItem(addon_handle, line["file"].strip(), li, False)
+		f.close()
+
+def list_groups():
+	if xbmcvfs.exists(txtfile):
+		groups = []
+		f = xbmcvfs.File(txtfile)
+		try:
+			lines = json.load(f);
+		except:
+			lines = []
+			f = xbmcvfs.File(txtfile, 'w')
+			json.dump(lines, f)
+			f.close()
+		for line in lines:
+			if len(line)>5:
+				if group_by == group_by_type:
+					group = line["type"]
+				else:
+					group = line["source"]
+				if group not in groups:
+					groups.append(group)
+					if group_by == group_by_type:
+						nm = group
+						ic = imgPath+'/resources/' + group + '.png'
+					else:
+						nm = group
+						ads = group.split("/")
+						if len(ads) > 2: nm = ads[2]
+						try:
+							la = xbmcaddon.Addon(nm)
+							nm = la.getAddonInfo('name')
+							ic = la.getAddonInfo('icon')
+						except:
+							if group==lang(30002): ic = imgPath+'/resources/movie.png'
+							elif group==lang(30003): ic = imgPath+'/resources/episode.png'
+							elif group==lang(30004): ic = imgPath+'/resources/musicvideo.png'
+							else: ic = imgPath+'/resources/addons.png'
+					addDirectoryItem(addon_handle, url({'menu': group.encode("utf-8")}), ListItem(nm, iconImage=ic), True)
+		f.close()
+	if xbmcvfs.exists(oldfile):
+		addDirectoryItem(addon_handle, url({'menu': 'oldlist'}), ListItem(lang(30019)), True)
+
+def list_old_items(nbrLines):
+	xbmcplugin.setContent(addon_handle, "movies")
+	if xbmcvfs.exists(oldfile):
+		f = xbmcvfs.File(oldfile)
 		lines = f.readBytes().decode("utf-8")
 		f.close()
-		nbr=0
+		nbr=1
 		for line in lines.split(chr(10)):
+			if nbr>nbrLines: break
 			item = line.split(chr(9))
-			if len(item)>3 and nbr<list_size and (item[3]==addon or addon=='*'):
+			if len(item)>3:
+				nbr=nbr+1
 				desc=''
 				if show_date == "true" and len(item)>4 : desc = desc + item[4].strip() + ' '
 				if show_time == "true" and len(item)>5: desc = desc + item[5].strip() + ' '
@@ -74,48 +124,18 @@ def list_addonitems(addon):
 				li.setProperty('IsPlayable', 'true')
 				command = []
 				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
-				nbr=nbr+1
 				li.addContextMenuItems(command)
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
-		endOfDirectory(addon_handle)
-
-def list_addons():
-	if group_addons == "true":
-		addDirectoryItem(addon_handle, url({'menu': '*'}), ListItem(lang(30006), iconImage=imgPath+'/resources/others.png'), True)
+			
+if menu is None or menu[0]=="top":
+	if single_list == "true":
+		list_items("*", list_size)
+		list_old_items(list_size)
 	else:
-		if xbmcvfs.exists(txtfile):
-			addons = []
-			f = xbmcvfs.File(txtfile)
-			lines = f.readBytes().decode("utf-8")
-			for line in lines.split(chr(10)):
-				fld = line.split(chr(9))
-				if len(fld)>5:
-					ad = fld[3]
-					ads = ad.split("/")
-					if len(ads) > 2: ad = ads[2]
-					if ad not in addons:
-						addons.append(ad)
-						try:
-							la = xbmcaddon.Addon(ad)
-							nm = la.getAddonInfo('name')
-							ic = la.getAddonInfo('icon')
-						except:
-							nm = ad
-							ic = imgPath+'/resources/addons.png'
-						addDirectoryItem(addon_handle, url({'menu': fld[3]}), ListItem(nm, iconImage=ic), True)
-			f.close()
-		
-if menu is None:
-	xbmcplugin.setContent(addon_handle, "menu")
-	if show_library == "true":
-		addDirectoryItem(addon_handle, url({'menu': 'movies'}), ListItem(lang(30002), iconImage=imgPath+'/resources/movies.png'), True)
-		addDirectoryItem(addon_handle, url({'menu': 'episodes'}), ListItem(lang(30003), iconImage=imgPath+'/resources/episodes.png'), True)
-	if show_music == "true":
-		addDirectoryItem(addon_handle, url({'menu': 'musicvideos'}), ListItem(lang(30004), iconImage=imgPath+'/resources/musicvideos.png'), True)
-		addDirectoryItem(addon_handle, url({'menu': 'songs'}), ListItem(lang(30005), iconImage=imgPath+'/resources/songs.png'), True)
-	if show_addons == "true":
-		list_addons()
+		xbmcplugin.setContent(addon_handle, "menu")
+		list_items("*", top_size)
+		list_groups()
 	if enable_debug	== "true":
 		addDirectoryItem(addon_handle, url({'menu': 'showlist'}), ListItem(lang(30014)), True)
 		if xbmcvfs.exists(txtfile):
@@ -123,41 +143,36 @@ if menu is None:
 		else:
 			addDirectoryItem(addon_handle, url({'menu': 'deletelist'}), ListItem(lang(30016)), True)
 	endOfDirectory(addon_handle)
-elif menu[0] == 'movies':
-	list_items(get_items("VideoLibrary.GetMovies","movies"),'movies')
-elif menu[0] == 'episodes':
-	list_items(get_items("VideoLibrary.GetEpisodes","episodes"),"episodes")
-elif menu[0] == 'musicvideos':
-	list_items(get_items("VideoLibrary.GetMusicVideos","musicvideos"),"musicvideos")
-elif menu[0] == 'songs':
-	list_items(get_items("AudioLibrary.GetSongs","songs"),"songs")
 elif menu[0] == 'remove':
 	lid = args.get('id', None)
 	if xbmcvfs.exists(txtfile) and lid is not None:
-		rid = int(lid[0])
 		f = xbmcvfs.File(txtfile)
-		lines = f.readBytes().decode("utf-8")
+		lines = json.load(f)
 		f.close()
-		nbr=0
-		f = xbmcvfs.File(txtfile, 'w')
-		for line in lines.split(chr(10)):
-			item = line.split(chr(9))
-			if len(item)>2 and nbr!=rid:
-				f.write(line)
-			nbr=nbr+1
-		f.close()
-		xbmc.executebuiltin("ActivateWindow(Videos,plugin://plugin.video.last_played?menu=addons)")
+		osz = len(lines) 
+		lines.remove(lines[int(lid[0])])
+		if len(lines)>0 or osz==1:
+			f = xbmcvfs.File(txtfile, 'w')
+			json.dump(lines, f)
+			f.close()
+		xbmc.executebuiltin("ActivateWindow(Videos,plugin://plugin.video.last_played?menu=top)")
 elif menu[0] == 'showlist':
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
-		lines = f.readBytes().decode("utf-8")
-		for line in lines.split(chr(10)):
-			addDirectoryItem(addon_handle, url(""), ListItem(str(line)), False)
+		lines = json.load(f)
 		f.close()
+		for line in lines:
+			addDirectoryItem(addon_handle, url({}), ListItem(str(line)), False)
 		endOfDirectory(addon_handle)
 elif menu[0] == 'deletelist':
 	if xbmcvfs.exists(txtfile):
-		xbmcvfs.delete(txtfile)
-
+		lines = []
+		f = xbmcvfs.File(txtfile, 'w')
+		json.dump(lines, f)
+		f.close()
+elif menu[0] == 'oldlist':
+	list_old_items(list_size)
+	endOfDirectory(addon_handle)
 else:
-	list_addonitems(menu[0])
+	list_items(menu[0], list_size)
+	endOfDirectory(addon_handle)
