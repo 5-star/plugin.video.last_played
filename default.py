@@ -1,8 +1,7 @@
-import os, re, sys, time
+import os, re, time
 import json
 import urllib, urllib2
 import xbmc
-import xbmcgui
 import xbmcaddon
 import xbmcvfs
 
@@ -26,14 +25,14 @@ class KodiPlayer(xbmc.Player):
 
 	def send2fivestar(self, line):
 		wid = line["id"]
-		if line["type"]=="movie": type="M"
-		elif line["type"]=="episode": type="S"
-		else: type="V"
-		
-		if type=="M" and addon.getSetting('movies') != "true": return
-		if type=="S" and addon.getSetting('tv') != "true": return
-		if type=="V" and addon.getSetting('videos') != "true": return
-		
+		if line["type"]=="movie": typ="M"
+		elif line["type"]=="episode": typ="S"
+		else: typ="V"
+
+		if typ=="M" and addon.getSetting('movies') != "true": return
+		if typ=="S" and addon.getSetting('tv') != "true": return
+		if typ=="V" and addon.getSetting('videos') != "true": return
+
 		imdbId = ""
 		tvdbId = ""
 		orgTitle = ""
@@ -41,13 +40,13 @@ class KodiPlayer(xbmc.Player):
 		season = ""
 		episode = ""
 		if wid>0:
-			if type=="M":
+			if typ=="M":
 				request = self._buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
 				result, data = self._query(request)[:2]
 				if ( result and 'moviedetails' in data ):
 					imdbId = data['moviedetails']["imdbnumber"]
 					orgTitle = data['moviedetails']["originaltitle"]
-			elif type=="S":
+			elif typ=="S":
 				request = self._buildRequest('VideoLibrary.GetEpisodeDetails', {'episodeid' : wid, 'properties' : ['tvshowid', 'season', 'episode']})
 				result, data = self._query(request)[:2]
 				if ( result and 'episodedetails' in data ):
@@ -59,7 +58,7 @@ class KodiPlayer(xbmc.Player):
 						showTitle = data['tvshowdetails']["label"]
 						orgTitle = data['tvshowdetails']["originaltitle"]
 						tvdbId = data['tvshowdetails']["imdbnumber"]
-										
+
 		url = "http://www.5star-movies.com/WebService.asmx/kodiWatch?tmdbId="
 		url = url + "&tvdbId=" + tvdbId
 		url = url + "&imdbId=" + imdbId
@@ -68,7 +67,7 @@ class KodiPlayer(xbmc.Player):
 		url = url + "&orgtitle=" + urllib.quote(orgTitle.encode("utf-8"))
 		url = url + "&year=" + str(line["year"])
 		url = url + "&source=" + urllib.quote(line["source"].encode("utf-8"))
-		url = url + "&type=" + type
+		url = url + "&type=" + typ
 		url = url + "&usr=" + urllib.quote(addon.getSetting('TMDBusr'))
 		url = url + "&pwd=" + addon.getSetting('TMDBpwd')
 		url = url + "&link=" + urllib.quote(line["file"].encode("utf-8"))
@@ -78,9 +77,9 @@ class KodiPlayer(xbmc.Player):
 		url = url + "&season=" + str(season)
 		url = url + "&episode=" + str(episode)
 		url = url + "&date=" + line["date"]
-	
+
 		request = urllib2.Request(url)
-		response = urllib2.urlopen(request)
+		urllib2.urlopen(request)
 
 	# Checks JSON response and returns boolean result
 	def _checkReponse(self, response):
@@ -88,34 +87,34 @@ class KodiPlayer(xbmc.Player):
 		if ( ('result' in response) and ('error' not in response) ):
 			result = True
 		return result
-		
+
 	# Executes JSON request and returns the JSON response
-	def _execute(self, request):
+	def execute(self, request):
 		request_string = json.dumps(request)
 		response = xbmc.executeJSONRPC(request_string)  
 		if ( response ):
 			response = json.loads(response)
 		return response
-    
+
 	# Builds JSON request with provided json data
-	def _buildRequest(self, method, params={}, jsonrpc='2.0', rid='1'):
+	def _buildRequest(self, method, params, jsonrpc='2.0', rid='1'):
 		request = { 'jsonrpc' : jsonrpc, 'method' : method, 'params' : params, 'id' : rid, }
 		return request
-		
+
 	# Performs single JSON query and returns result boolean, data dictionary and error string
 	def _query(self, request):
 		result = False
 		data = {}
 		error = ''
 		if ( request ):
-			response = self._execute(request)
+			response = self.execute(request)
 			if ( response ):
 				result = self._checkReponse(response)
 				if ( result ):
 					data = response['result']
 				else: error = response['error']
 		return (result, data, error)
-	 
+
 	def onPlayBackStarted(self):
 		request = self._buildRequest('Player.GetItem', {'playerid' : 1, 'properties' : ['file', 'title', 'year', 'thumbnail', 'fanart']})
 		result, data = self._query(request)[:2]
@@ -124,18 +123,15 @@ class KodiPlayer(xbmc.Player):
 		newline = {}
 		if ( result and 'item' in data and data['item'] ):
 			item = data['item']
-			#if item['file'][0:4]=='http' or item['type']=='unknown':
-			#getTitle=xbmc.Player().getVideoInfoTag().getTitle().strip()
-			#if getTitle=='': getTitle=item['title']
 			getTitle=item['title']
 			if getTitle=='': getTitle=item['label']
 			thumbnail = item['thumbnail'].strip().rstrip('/').replace('image://','')
 			thumbnail = urllib.unquote(thumbnail)
 			fanart = item['fanart'].strip().rstrip('/').replace('image://','')
 			fanart = urllib.unquote(fanart)
-			type = item['type']
-			if type=='unknown': type = 'video'
-			newline = {"title":getTitle,"year":item['year'],"file":item['file'].strip(), "id":item.get('id', 0), "type":type,"thumbnail":thumbnail, "fanart":fanart}
+			typ = item['type']
+			if typ=='unknown': typ = 'video'
+			newline = {"title":getTitle,"year":item['year'],"file":item['file'].strip(), "id":item.get('id', 0), "type":typ,"thumbnail":thumbnail, "fanart":fanart}
 			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start line) "+str(newline), 3)
 
 	def videoEnd(self):

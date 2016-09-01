@@ -1,13 +1,12 @@
-import sys, os, re
-from datetime import datetime
+import sys, re
 import json
-import urllib, urllib2
+import urllib
 import urlparse
 import xbmc
 import xbmcplugin
 import xbmcaddon
 import xbmcvfs
-from xbmcgui import ListItem, Window
+from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory
 
 addon = xbmcaddon.Addon()
@@ -15,9 +14,9 @@ addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
 menu = args.get('menu', None)
 try: list_size = int(addon.getSetting('list_size'))
-except: list_size=0
+except Exception: list_size=0
 try: top_size = int(addon.getSetting('top_size'))
-except: top_size=0
+except Exception: top_size=0
 single_list = addon.getSetting('single_list')
 group_by = addon.getSetting('group_by')
 show_date = addon.getSetting('show_date')
@@ -69,11 +68,8 @@ def list_groups():
 		f = xbmcvfs.File(txtfile)
 		try:
 			lines = json.load(f);
-		except:
+		except Exception:
 			lines = []
-			f = xbmcvfs.File(txtfile, 'w')
-			json.dump(lines, f)
-			f.close()
 		for line in lines:
 			if len(line)>5:
 				if group_by == group_by_type:
@@ -93,7 +89,7 @@ def list_groups():
 							la = xbmcaddon.Addon(nm)
 							nm = la.getAddonInfo('name')
 							ic = la.getAddonInfo('icon')
-						except:
+						except Exception:
 							if group==lang(30002): ic = imgPath+'/resources/movie.png'
 							elif group==lang(30003): ic = imgPath+'/resources/episode.png'
 							elif group==lang(30004): ic = imgPath+'/resources/musicvideo.png'
@@ -127,7 +123,7 @@ def list_old_items(nbrLines):
 				li.addContextMenuItems(command)
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
-			
+
 if menu is None or menu[0]=="top":
 	if single_list == "true":
 		list_items("*", list_size)
@@ -149,7 +145,7 @@ elif menu[0] == 'remove':
 		f = xbmcvfs.File(txtfile)
 		lines = json.load(f)
 		f.close()
-		osz = len(lines) 
+		osz = len(lines)
 		lines.remove(lines[int(lid[0])])
 		if len(lines)>0 or osz==1:
 			f = xbmcvfs.File(txtfile, 'w')
