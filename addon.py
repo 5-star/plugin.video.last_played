@@ -1,4 +1,4 @@
-import sys, re
+import sys
 import json
 import urllib
 import urlparse
@@ -111,15 +111,15 @@ def list_old_items(nbrLines):
 			item = line.split(chr(9))
 			if len(item)>3:
 				nbr=nbr+1
+				command = []
+				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
 				desc=''
 				if show_date == "true" and len(item)>4 : desc = desc + item[4].strip() + ' '
 				if show_time == "true" and len(item)>5: desc = desc + item[5].strip() + ' '
 				desc=desc + item[0]
 				li = ListItem(label=desc)
-				li.setInfo(type="Video", infoLabels={ "Title": desc})
 				li.setProperty('IsPlayable', 'true')
-				command = []
-				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
+				li.setInfo(type="Video", infoLabels={ "Title": desc})
 				li.addContextMenuItems(command)
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
