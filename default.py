@@ -42,7 +42,7 @@ class KodiPlayer(xbmc.Player):
 		if wid>0:
 			if typ=="M":
 				request = self._buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
-				result, data = self.jsonQueryrequest)[:2]
+				result, data = self.jsonQuery(request)[:2]
 				if ( result and 'moviedetails' in data ):
 					imdbId = data['moviedetails']["imdbnumber"]
 					orgTitle = data['moviedetails']["originaltitle"]
