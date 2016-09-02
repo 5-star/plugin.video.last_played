@@ -39,8 +39,8 @@ Release history
 ---------------
 1.0.7 - New list format and add 5star-movies
 1.0.6 - Configuration options
-1.0.5 - Add debug options 
-1.0.4 - New options: Split by addon and display date and time 
+1.0.5 - Add debug options
+1.0.4 - New options: Split by addon and display date and time
 1.0.3 - Improve metadata info. Aloow item removal. Make it kodi repo compliant
 1.0.2 - Set media type on list items
 1.0.1 - Initial Release
