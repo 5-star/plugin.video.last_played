@@ -106,6 +106,7 @@ def send2fivestar(line):
 	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
 	url = url + "&season=" + str(season)
 	url = url + "&episode=" + str(episode)
+	url = url + "&version=1.07"
 	url = url + "&date=" + line["date"]
 
 	request = urllib2.Request(url)

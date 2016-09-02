@@ -40,6 +40,7 @@ def list_items(selGroup, nbrLines):
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
 		nbr=1
+		idx=0
 		for line in json.load(f):
 			if nbr>nbrLines: break
 			if group_by == group_by_type: group = line["type"]
@@ -54,12 +55,13 @@ def list_items(selGroup, nbrLines):
 				li.setInfo(type="Video", infoLabels={ "Title": desc})
 				li.setProperty('IsPlayable', 'true')
 				command = []
-				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
+				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(idx)+")"))
 				li.addContextMenuItems(command)
 				li.setArt({ "poster" : line["thumbnail"].strip() })
 				li.setArt({ "thumbnail" : line["thumbnail"].strip() })
 				li.setArt({ "fanart" : line["fanart"].strip() })
 				addDirectoryItem(addon_handle, line["file"].strip(), li, False)
+			idx = idx + 1
 		f.close()
 
 def list_groups():
@@ -111,8 +113,6 @@ def list_old_items(nbrLines):
 			item = line.split(chr(9))
 			if len(item)>3:
 				nbr=nbr+1
-				command = []
-				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(nbr)+")"))
 				desc=''
 				if show_date == "true" and len(item)>4 : desc = desc + item[4].strip() + ' '
 				if show_time == "true" and len(item)>5: desc = desc + item[5].strip() + ' '
@@ -120,7 +120,6 @@ def list_old_items(nbrLines):
 				li = ListItem(label=desc)
 				li.setProperty('IsPlayable', 'true')
 				li.setInfo(type="Video", infoLabels={ "Title": desc})
-				li.addContextMenuItems(command)
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
 
@@ -147,6 +146,7 @@ elif menu[0] == 'remove':
 		f.close()
 		osz = len(lines)
 		lines.remove(lines[int(lid[0])])
+		# to avoid accidental cleaning, update empty file only it had only one line before
 		if len(lines)>0 or osz==1:
 			f = xbmcvfs.File(txtfile, 'w')
 			json.dump(lines, f)
