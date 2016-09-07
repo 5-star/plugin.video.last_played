@@ -39,10 +39,12 @@ def list_items(selGroup, nbrLines):
 	xbmcplugin.setContent(addon_handle, "movies")
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
-		nbr=1
-		idx=0
-		for line in json.load(f):
-			if nbr>nbrLines: break
+		nbr=0 # nbr of line on screen (selected)
+		idx=0 # idx of line on the json file
+		try: lines = json.load(f)
+		except: lines = []
+		for line in lines:
+			if nbr>=nbrLines: break
 			if group_by == group_by_type: group = line["type"]
 			else: group = line["source"]
 			if len(line)>3 and (group==selGroup or selGroup=='*'):
@@ -50,7 +52,12 @@ def list_items(selGroup, nbrLines):
 				desc=''
 				if show_date == "true": desc = desc + line["date"].strip() + ' '
 				if show_time == "true": desc = desc + line["time"].strip() + ' '
-				desc=desc + line["title"]
+				show = ''
+				if 'show' in line: show=line["show"] + " "
+				if 'season' in line and line["season"]!='':
+					if 'episode' in line and line["episode"]!='':
+						show = show + line["season"]+"x"+line["episode"] + " "
+				desc=desc + show + line["title"]
 				li = ListItem(label=desc)
 				li.setInfo(type="Video", infoLabels={ "Title": desc})
 				li.setProperty('IsPlayable', 'true')
@@ -63,6 +70,10 @@ def list_items(selGroup, nbrLines):
 				addDirectoryItem(addon_handle, line["file"].strip(), li, False)
 			idx = idx + 1
 		f.close()
+		if single_list == "true" and nbr == 0:
+			li = ListItem(lang(30030))
+			li.setProperty('IsPlayable', 'false')
+			addDirectoryItem(addon_handle, "", li, isFolder = False)
 
 def list_groups():
 	if xbmcvfs.exists(txtfile):
@@ -130,6 +141,8 @@ if menu is None or menu[0]=="top":
 	else:
 		xbmcplugin.setContent(addon_handle, "menu")
 		list_items("*", top_size)
+		if top_size>0: addDirectoryItem(addon_handle, "", ListItem(label=""), False)
+
 		list_groups()
 	if enable_debug	== "true":
 		addDirectoryItem(addon_handle, url({'menu': 'showlist'}), ListItem(lang(30014)), True)

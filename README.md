@@ -14,16 +14,16 @@ Open the list of last played, select the line to remove, and choose "Remove from
 
 Settings:
 ---------
-Number of lines: How many lines to display on screen<br />
-Single List: Shows everything on a single list, no matter what or where is was played<br />
-Group by Type: Display on separate groups Movies, Shows, Videos, etc<br />
-Group by Source: Display separate groups for each addon used to play<br />
-Number of lines on top: If grouping is active, display before the groups some of the last played movies or shows<br />
-Show Date: Display for each item the date when it was played<br />
-Show Time: Display time of play<br />
-Play History at 5 Star Movies: The play history can be viewed privately on the www.5star.movies site<br />
-Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history<br />
-Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors<br />
+Number of lines: How many lines to display on screen
+Single List: Shows everything on a single list, no matter what or where is was played
+Group by Type: Display on separate groups Movies, Shows, Videos, etc
+Group by Source: Display separate groups for each addon used to play
+Number of lines on top: If grouping is active, display before the groups some of the last played movies or shows
+Show Date: Display for each item the date when it was played
+Show Time: Display time of play
+Play History at 5 Star Movies: The play history can be viewed privately on the www.5star.movies site
+Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history
+Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors
 
 Installation
 ------------
@@ -37,10 +37,10 @@ b) Or install it manually following these steps
  
 Release history
 ---------------
-1.0.7 - New list format and add 5star-movies<br />
-1.0.6 - Configuration options<br />
-1.0.5 - Add debug options<br />
-1.0.4 - New options: Split by addon and display date and time<br />
-1.0.3 - Improve metadata info. Aloow item removal. Make it kodi repo compliant<br />
-1.0.2 - Set media type on list items<br />
-1.0.1 - Initial Release<br />
+1.0.7 - New list format and add 5star-movies
+1.0.6 - Configuration options
+1.0.5 - Add debug options 
+1.0.4 - New options: Split by addon and display date and time 
+1.0.3 - Improve metadata info. Aloow item removal. Make it kodi repo compliant
+1.0.2 - Set media type on list items
+1.0.1 - Initial Release
