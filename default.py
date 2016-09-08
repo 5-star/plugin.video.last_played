@@ -20,7 +20,7 @@ lang = addon.getLocalizedString
 
 # Builds JSON request with provided json data
 def buildRequest(method, params, jsonrpc='2.0', rid='1'):
-	request = { 'jsonrpc' : jsonrpc, 'method' : method, 'params' : params, 'id' : rid, }
+	request = { 'jsonrpc' : jsonrpc, 'method' : method, 'params' : params, 'id' : rid }
 	return request
 
 # Checks JSON response and returns boolean result
@@ -105,7 +105,7 @@ def send2fivestar(line):
 	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
 	url = url + "&season=" + str(season)
 	url = url + "&episode=" + str(episode)
-	url = url + "&version=1.07"
+	url = url + "&version=1.08"
 	url = url + "&date=" + line["date"]
 
 	request = urllib2.Request(url)
