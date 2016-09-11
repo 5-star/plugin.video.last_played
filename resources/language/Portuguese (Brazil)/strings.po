@@ -120,3 +120,7 @@ msgstr "Avançado"
 msgctxt "#30030"
 msgid "New install. Start watching and it will display here."
 msgstr "Nova instalação. Os próximos filems vistos surgirão aqui."
+
+msgctxt "#30031"
+msgid "Play with "
+msgstr "Tocar com "

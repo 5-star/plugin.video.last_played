@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import json
 import urllib
@@ -58,23 +59,29 @@ def list_items(selGroup, nbrLines):
 					if 'episode' in line and line["episode"]!='':
 						show = show + line["season"]+"x"+line["episode"] + " "
 				desc=desc + show + line["title"]
+				xpath=""
+				infolabels={'title': desc, 'year': line['year'], "mediatype": line['type'], 'Top250': line['id']}
 				li = ListItem(label=desc)
-				li.setInfo(type="Video", infoLabels={ "Title": desc})
-				li.setProperty('IsPlayable', 'true')
-				command = []
-				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(idx)+")"))
-				li.addContextMenuItems(command)
+				li.setInfo('video', infolabels)
 				li.setArt({ "poster" : line["thumbnail"].strip() })
 				li.setArt({ "thumbnail" : line["thumbnail"].strip() })
 				li.setArt({ "fanart" : line["fanart"].strip() })
-				addDirectoryItem(addon_handle, line["file"].strip(), li, False)
+				li.setProperty('IsPlayable', 'true')
+				command = []
+				command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(idx)+")"))
+				if line["file"][:6]=="plugin":
+					command.append((lang(30031)+line["source"], "PlayMedia(" + line["file"] + ")"))
+				li.addContextMenuItems(command)
+				xurl=line["file"]
+				if "video" in line and line["video"]!="": xurl=line["video"]
+				addDirectoryItem(addon_handle, xurl, li)
 			idx = idx + 1
 		f.close()
 		if single_list == "true" and nbr == 0:
 			li = ListItem(lang(30030))
 			li.setProperty('IsPlayable', 'false')
-			addDirectoryItem(addon_handle, "", li, isFolder = False)
-
+			addDirectoryItem(addon_handle, "", li, isFolder = True)
+			
 def list_groups():
 	if xbmcvfs.exists(txtfile):
 		groups = []
