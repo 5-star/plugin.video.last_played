@@ -14,7 +14,7 @@ else:
 	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 	if not os.path.exists(txtpath):
 		os.makedirs(txtpath)
-txtfile = txtpath + "lastPlayed.json"
+txtfile = txtpath + "lastPlayed2.json"
 fivestar = addon.getSetting('fivestar')
 enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
@@ -55,6 +55,7 @@ def JSquery(request):
 
 def send2fivestar(line):
 	wid = int(line["id"])
+	xbmc.log("sssss"+line["type"],3)
 	if line["type"]=="movie": typ="M"
 	elif line["type"]=="episode": typ="S"
 	else: typ="V"
@@ -62,6 +63,7 @@ def send2fivestar(line):
 	if typ=="M" and addon.getSetting('movies') != "true": return
 	if typ=="S" and addon.getSetting('tv') != "true": return
 	if typ=="V" and addon.getSetting('videos') != "true": return
+	xbmc.log("s2ssss"+typ,3)
 
 	imdbId = ""
 	tvdbId = ""
@@ -112,9 +114,11 @@ def send2fivestar(line):
 	url = url + "&episode=" + str(episode)
 	url = url + "&version=1.08"
 	url = url + "&date=" + line["date"]
+	xbmc.log("sssss"+url,3)
 	try:
 		request = urllib2.Request(url)
-		urllib2.urlopen(request)
+		response = urllib2.urlopen(request)
+		xbmc.log(str(response),3)
 	except:
 		pass
 
