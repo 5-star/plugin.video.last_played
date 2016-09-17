@@ -45,10 +45,6 @@ msgctxt "#30011"
 msgid "Show Time"
 msgstr "Mostrar Hora"
 
-msgctxt "#30012"
-msgid "Keep history at 5 Star Movies"
-msgstr "Manter histórico em 5 Start Movies"
-
 msgctxt "#30013"
 msgid "Enable debug"
 msgstr "Ativar debug"
