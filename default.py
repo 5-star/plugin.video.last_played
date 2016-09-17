@@ -15,7 +15,6 @@ else:
 	if not os.path.exists(txtpath):
 		os.makedirs(txtpath)
 txtfile = txtpath + "lastPlayed.json"
-fivestar = addon.getSetting('fivestar')
 enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
 
@@ -52,71 +51,6 @@ def JSquery(request):
 				data = response['result']
 			else: error = response['error']
 	return (result, data, error)
-
-def send2fivestar(line):
-	wid = int(line["id"])
-	if line["type"]=="movie": typ="M"
-	elif line["type"]=="episode": typ="S"
-	else: typ="V"
-
-	if typ=="M" and addon.getSetting('movies') != "true": return
-	if typ=="S" and addon.getSetting('tv') != "true": return
-	if typ=="V" and addon.getSetting('videos') != "true": return
-
-	imdbId = ""
-	tvdbId = ""
-	orgTitle = ""
-	showTitle = line["show"]
-	season = line["season"]
-	episode = line["episode"]
-	thumbnail = line["thumbnail"]
-	fanart = line["fanart"]
-	if wid>0:
-		if typ=="M":
-			request = buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
-			result, data = JSquery(request)[:2]
-			if ( result and 'moviedetails' in data ):
-				imdbId = data['moviedetails']["imdbnumber"]
-				orgTitle = data['moviedetails']["originaltitle"]
-		elif typ=="S":
-			request = buildRequest('VideoLibrary.GetEpisodeDetails', {'episodeid' : wid, 'properties' : ['tvshowid', 'season', 'episode']})
-			result, data = JSquery(request)[:2]
-			if ( result and 'episodedetails' in data ):
-				season = data['episodedetails']["season"]
-				episode = data['episodedetails']["episode"]
-				request = buildRequest('VideoLibrary.GetTvShowDetails', {'tvshowid' : data['episodedetails']["tvshowid"], 'properties' : ['imdbnumber', 'originaltitle']})
-				result, data = JSquery(request)[:2]
-				if ( result and 'tvshowdetails' in data ):
-					showTitle = data['tvshowdetails']["label"]
-					orgTitle = data['tvshowdetails']["originaltitle"]
-					tvdbId = data['tvshowdetails']["imdbnumber"]
-
-	xvideo = line["file"]
-	if "video" in line and line["video"]!="": xvideo = line["video"]
-	url = "http://www.5star-movies.com/WebService.asmx/kodiWatch?tmdbId="
-	url = url + "&tvdbId=" + tvdbId
-	url = url + "&imdbId=" + imdbId
-	url = url + "&kodiId=" + str(wid)
-	url = url + "&title=" + urllib.quote(line["title"].encode("utf-8"))
-	url = url + "&orgtitle=" + urllib.quote(orgTitle.encode("utf-8"))
-	url = url + "&year=" + str(line["year"])
-	url = url + "&source=" + urllib.quote(line["source"].encode("utf-8"))
-	url = url + "&type=" + typ
-	url = url + "&usr=" + urllib.quote(addon.getSetting('TMDBusr').encode("utf-8"))
-	url = url + "&pwd=" + addon.getSetting('TMDBpwd')
-	url = url + "&link=" + urllib.quote(xvideo.encode("utf-8"))
-	url = url + "&thumbnail=" + urllib.quote(line["thumbnail"].encode("utf-8"))
-	url = url + "&fanart=" + urllib.quote(line["fanart"].encode("utf-8"))
-	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
-	url = url + "&season=" + str(season)
-	url = url + "&episode=" + str(episode)
-	url = url + "&version=1.08"
-	url = url + "&date=" + line["date"]
-	try:
-		request = urllib2.Request(url)
-		urllib2.urlopen(request)
-	except:
-		pass
 
 def videoEnd():
 	retry=1
@@ -167,14 +101,12 @@ def videoEnd():
 				lines.insert(0, line)
 				replay = "S"
 				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final replay) "+str(line), 3)
-				if fivestar	== "true": send2fivestar(line)
 				break
 
 		if replay=="N":
 			newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
 			lines.insert(0, newline)
 			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
-			if fivestar	== "true": send2fivestar(newline)
 			if len(lines)>100:
 				del lines[len(lines)-1]
 
