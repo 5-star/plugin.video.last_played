@@ -181,6 +181,8 @@ elif menu[0] == 'showlist':
 			addDirectoryItem(addon_handle, url({}), ListItem(str(line)), False)
 		endOfDirectory(addon_handle)
 elif menu[0] == 'deletelist':
+	if xbmcvfs.exists(oldfile):
+		xbmcvfs.delete(oldfile)
 	if xbmcvfs.exists(txtfile):
 		lines = []
 		f = xbmcvfs.File(txtfile, 'w')
