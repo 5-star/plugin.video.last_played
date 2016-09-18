@@ -14,12 +14,8 @@ else:
 	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 	if not os.path.exists(txtpath):
 		os.makedirs(txtpath)
-<<<<<<< HEAD
-txtfile = txtpath + "lastPlayed2.json"
-fivestar = addon.getSetting('fivestar')
-=======
 txtfile = txtpath + "lastPlayed.json"
->>>>>>> origin/master
+fivestar = addon.getSetting('fivestar')
 enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
 
@@ -57,10 +53,8 @@ def JSquery(request):
 			else: error = response['error']
 	return (result, data, error)
 
-<<<<<<< HEAD
 def send2fivestar(line):
 	wid = int(line["id"])
-	xbmc.log("sssss"+line["type"],3)
 	if line["type"]=="movie": typ="M"
 	elif line["type"]=="episode": typ="S"
 	else: typ="V"
@@ -68,7 +62,6 @@ def send2fivestar(line):
 	if typ=="M" and addon.getSetting('movies') != "true": return
 	if typ=="S" and addon.getSetting('tv') != "true": return
 	if typ=="V" and addon.getSetting('videos') != "true": return
-	xbmc.log("s2ssss"+typ,3)
 
 	imdbId = ""
 	tvdbId = ""
@@ -119,16 +112,12 @@ def send2fivestar(line):
 	url = url + "&episode=" + str(episode)
 	url = url + "&version=1.08"
 	url = url + "&date=" + line["date"]
-	xbmc.log("sssss"+url,3)
 	try:
 		request = urllib2.Request(url)
-		response = urllib2.urlopen(request)
-		xbmc.log(str(response),3)
+		urllib2.urlopen(request)
 	except:
 		pass
 
-=======
->>>>>>> origin/master
 def videoEnd():
 	retry=1
 	xsource=''
@@ -178,12 +167,14 @@ def videoEnd():
 				lines.insert(0, line)
 				replay = "S"
 				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final replay) "+str(line), 3)
+				if fivestar	== "true": send2fivestar(line)
 				break
 
 		if replay=="N":
 			newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
 			lines.insert(0, newline)
 			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
+			if fivestar	== "true": send2fivestar(newline)
 			if len(lines)>100:
 				del lines[len(lines)-1]
 

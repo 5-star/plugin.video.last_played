@@ -21,6 +21,7 @@ Group by Source: Display separate groups for each addon used to play<br />
 Number of lines on top: If grouping is active, display before the groups some of the last played movies or shows<br />
 Show Date: Display for each item the date when it was played<br />
 Show Time: Display time of play<br />
+Play History at 5 Star Movies: The play history can be viewed privately on the www.5star.movies site<br />
 Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history<br />
 Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors<br />
 
