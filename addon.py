@@ -28,7 +28,7 @@ if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom
 	txtpath = addon.getSetting('custom_path').decode("utf-8")
 else:
 	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
-txtfile = txtpath + "lastPlayed2.json"
+txtfile = txtpath + "lastPlayed.json"
 oldfile = txtpath + "list.txt"
 imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')).decode('utf-8')
 group_by_type=lang(30018)
