@@ -37,6 +37,7 @@ https://github.com/5-star/repository.5st...p?raw=true<br />
  
 Release history
 ---------------
+1.0.9 - Skin handling<br />
 1.0.8 - New replay method and some minor improvements<br />
 1.0.7 - New list format and add 5star-movies<br />
 1.0.6 - Configuration options<br />

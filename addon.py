@@ -57,7 +57,7 @@ def list_items(selGroup, nbrLines):
 				if 'show' in line: show=line["show"] + " "
 				if 'season' in line and line["season"]!='':
 					if 'episode' in line and line["episode"]!='':
-						show = show + line["season"]+"x"+line["episode"] + " "
+						show = show + str(line["season"])+"x"+str(line["episode"]) + " "
 				desc=desc + show + line["title"]
 				xpath=""
 				infolabels={'title': desc, 'year': line['year'], "mediatype": line['type'], 'Top250': line['id']}

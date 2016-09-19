@@ -54,7 +54,8 @@ def JSquery(request):
 	return (result, data, error)
 
 def send2fivestar(line):
-	wid = int(line["id"])
+	wid = 0
+	if line["id"]!="": int(line["id"])
 	if line["type"]=="movie": typ="M"
 	elif line["type"]=="episode": typ="S"
 	else: typ="V"
@@ -126,62 +127,71 @@ def videoEnd():
 		retry=retry+1
 		time.sleep(0.1)
 
-	if xsource!='':
-		xtitle = xbmc.getInfoLabel('ListItem.Title').decode("utf-8").strip()
-		xyear = xbmc.getInfoLabel('ListItem.Year')
-		xfile = xbmc.getInfoLabel('ListItem.FileNameAndPath').decode("utf-8").strip()
-		xid = xbmc.getInfoLabel('ListItem.DBID')
-		xtype = xbmc.getInfoLabel('ListItem.DBTYPE')
-		xthumb = xbmc.getInfoLabel('ListItem.Art(thumb)').decode("utf-8")
-		xfanart = xbmc.getInfoLabel('ListItem.Art(fanart)').decode("utf-8")
-		xshow = xbmc.getInfoLabel('ListItem.TVShowTitle').decode("utf-8").strip()
-		xseason = xbmc.getInfoLabel('ListItem.Season')
-		xepisode = xbmc.getInfoLabel('ListItem.Episode')
-		xvideo = player_monitor.video
-		
-		if int(xid)>0:
-			if xtype=="movie": xsource=lang(30002)
-			elif xtype=="episode": xsource=lang(30003)
-			elif xtype=="musicvideo": xsource=lang(30004)
-			else: xsource=lang(30022)
-		else:
-			ads = xsource.split("/")
-			if len(ads) > 2: xsource = ads[2]
+	if xsource=='': xsource="player"
+	xtitle = xbmc.getInfoLabel('ListItem.Title').decode("utf-8").strip()
+	if xtitle=="" : xtitle = player_monitor.title
+	xyear = xbmc.getInfoLabel('ListItem.Year')
+	if xyear is None : xyear = player_monitor.year
+	xid = xbmc.getInfoLabel('ListItem.DBID')
+	if xid=="": xid = player_monitor.id
+	xtype = xbmc.getInfoLabel('ListItem.DBTYPE')
+	if xtype=="": xtype = player_monitor.type
+	xthumb = xbmc.getInfoLabel('ListItem.Art(thumb)').decode("utf-8")
+	if xthumb=="": xthumb = player_monitor.thumbnail
+	xfanart = xbmc.getInfoLabel('ListItem.Art(fanart)').decode("utf-8")
+	if xfanart=="": xfanart = player_monitor.fanart
+	xshow = xbmc.getInfoLabel('ListItem.TVShowTitle').decode("utf-8").strip()
+	if xshow=="": xshow = player_monitor.showtitle
+	xseason = xbmc.getInfoLabel('ListItem.Season')
+	if xseason=="": xseason = player_monitor.season
+	xepisode = xbmc.getInfoLabel('ListItem.Episode')
+	if xepisode=="": xepisode = player_monitor.episode
+	xvideo = player_monitor.video		
+	xfile = xbmc.getInfoLabel('ListItem.FileNameAndPath').decode("utf-8").strip()
 	
-		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
-		if xbmcvfs.exists(txtfile):
-			f = xbmcvfs.File(txtfile)
-			try: lines = json.load(f)
-			except: lines = []
-			f.close()
-		else: lines = []
+	if xid!="" and int(xid)>0:
+		if xtype=="movie": xsource=lang(30002)
+		elif xtype=="episode": xsource=lang(30003)
+		elif xtype=="musicvideo": xsource=lang(30004)
+		else: xsource=lang(30022)
+	else:
+		ads = xsource.split("/")
+		if len(ads) > 2: xsource = ads[2]
+	
+	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
+	if xbmcvfs.exists(txtfile):
+		f = xbmcvfs.File(txtfile)
+		try: lines = json.load(f)
+		except: lines = []
+		f.close()
+	else: lines = []
 
-		replay = "N"
-		for line in lines:
-			if xfile==line["file"]: replay = "S"
-			if "video" in line and xvideo==line["video"]: replay = "S"
-			if replay == "S":
-				lines.remove(line)
-				line.update({"date": time.strftime("%Y-%m-%d")})
-				line.update({"time": time.strftime("%H:%M:%S")})
-				lines.insert(0, line)
-				replay = "S"
-				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final replay) "+str(line), 3)
-				if fivestar	== "true": send2fivestar(line)
-				break
+	replay = "N"
+	for line in lines:
+		if xfile==line["file"]: replay = "S"
+		if "video" in line and xvideo==line["video"]: replay = "S"
+		if replay == "S":
+			lines.remove(line)
+			line.update({"date": time.strftime("%Y-%m-%d")})
+			line.update({"time": time.strftime("%H:%M:%S")})
+			lines.insert(0, line)
+			replay = "S"
+			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final replay) "+str(line), 3)
+			if fivestar	== "true": send2fivestar(line)
+			break
 
-		if replay=="N":
-			newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
-			lines.insert(0, newline)
-			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
-			if fivestar	== "true": send2fivestar(newline)
-			if len(lines)>100:
-				del lines[len(lines)-1]
+	if replay=="N":
+		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
+		lines.insert(0, newline)
+		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
+		if fivestar	== "true": send2fivestar(newline)
+		if len(lines)>100:
+			del lines[len(lines)-1]
 
-		if len(lines)>0:
-			f = xbmcvfs.File(txtfile, 'w')
-			json.dump(lines, f)
-			f.close()
+	if len(lines)>0:
+		f = xbmcvfs.File(txtfile, 'w')
+		json.dump(lines, f)
+		f.close()
 
 class KodiPlayer(xbmc.Player):
 	def __init__(self, *args, **kwargs):
@@ -197,7 +207,29 @@ class KodiPlayer(xbmc.Player):
 
 	def onPlayBackStarted(self):
 		player_monitor.video = player_monitor.getPlayingFile()
-				
+		request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
+		result, data = JSquery(request)[:2]
+		item=data["item"]
+		if "title" in item: player_monitor.title = item["title"]
+		else: player_monitor.title = ""
+		if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
+		if "year" in item: player_monitor.year = item["year"]
+		else: player_monitor.year = ""
+		if "thumbnail" in item: player_monitor.thumbnail = item["thumbnail"]
+		else: player_monitor.thumbnail = ""
+		if "fanart" in item: player_monitor.fanart = item["fanart"]
+		else: player_monitor.fanart = ""
+		if "showtitle" in item: player_monitor.showtitle = item["showtitle"]
+		else: player_monitor.showtitle = ""
+		if "season" in item: player_monitor.season = item["season"]
+		else: player_monitor.season = ""
+		if "episode" in item: player_monitor.episode = item["episode"]
+		else: player_monitor.episode = ""
+		if "id" in item: player_monitor.id = item["id"]
+		else: player_monitor.id = ""
+		if "type" in item: player_monitor.type = item["type"]
+		else: player_monitor.type = ""
+		
 player_monitor = KodiPlayer()
 
 while not xbmc.abortRequested:
