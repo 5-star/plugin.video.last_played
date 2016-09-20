@@ -168,7 +168,7 @@ def videoEnd():
 
 	replay = "N"
 	for line in lines:
-		if xfile==line["file"]: replay = "S"
+		if xfile!="" and xfile==line["file"]: replay = "S"
 		if "video" in line and xvideo==line["video"]: replay = "S"
 		if replay == "S":
 			lines.remove(line)
@@ -210,7 +210,6 @@ class KodiPlayer(xbmc.Player):
 		request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
 		result, data = JSquery(request)[:2]
 		item=data["item"]
-		xbmc.log("aaa"+str(data),3)
 		if "title" in item: player_monitor.title = item["title"]
 		else: player_monitor.title = ""
 		if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
