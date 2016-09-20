@@ -210,6 +210,7 @@ class KodiPlayer(xbmc.Player):
 		request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
 		result, data = JSquery(request)[:2]
 		item=data["item"]
+		xbmc.log("aaa"+str(data),3)
 		if "title" in item: player_monitor.title = item["title"]
 		else: player_monitor.title = ""
 		if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
@@ -221,9 +222,9 @@ class KodiPlayer(xbmc.Player):
 		else: player_monitor.fanart = ""
 		if "showtitle" in item: player_monitor.showtitle = item["showtitle"]
 		else: player_monitor.showtitle = ""
-		if "season" in item: player_monitor.season = item["season"]
+		if "season" in item and item["season"]>0: player_monitor.season = item["season"]
 		else: player_monitor.season = ""
-		if "episode" in item: player_monitor.episode = item["episode"]
+		if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
 		else: player_monitor.episode = ""
 		if "id" in item: player_monitor.id = item["id"]
 		else: player_monitor.id = ""
