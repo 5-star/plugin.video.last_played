@@ -112,7 +112,7 @@ def send2fivestar(line):
 	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
 	url = url + "&season=" + str(season)
 	url = url + "&episode=" + str(episode)
-	url = url + "&version=1.09"
+	url = url + "&version=1.10"
 	url = url + "&date=" + line["date"]
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (5 star) "+url, 3)
 	try:
