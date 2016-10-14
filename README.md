@@ -28,15 +28,16 @@ Enable Debug: Display an extra menu option allowing to clear the full list, and 
 Installation
 ------------
 - Download the 5 star repo<br />
-https://github.com/5-star/repository.5st...p?raw=true<br />
+https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/repository.5star-1.0.2.zip<br />
 - Open Kodi<br />
 - Go to `System -> Settings -> Add-ons<br />
 - Select Install from zip file` -> Select the downloaded zip file<br />
 - Then select -> Install from repository -> Last played addon and Install<br />
-- Enjoy Smile<br />
+- Enjoy :)<br />
  
 Release history
 ---------------
+1.1.0 - Blacklist and new site<br />
 1.0.9 - Skin handling<br />
 1.0.8 - New replay method and some minor improvements<br />
 1.0.7 - New list format and add 5star-movies<br />
