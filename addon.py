@@ -55,8 +55,8 @@ def list_items(selGroup, nbrLines):
 				if show_time == "true": desc = desc + line["time"].strip() + ' '
 				show = ''
 				if 'show' in line: show=line["show"] + " "
-				if 'season' in line and line["season"]!='':
-					if 'episode' in line and line["episode"]!='':
+				if 'season' in line and line["season"]!='' and str(line["season"])!="-1":
+					if 'episode' in line and line["episode"]!='' and str(line["episode"])!="-1":
 						show = show + str(line["season"])+"x"+str(line["episode"]) + " "
 				desc=desc + show + line["title"]
 				xpath=""

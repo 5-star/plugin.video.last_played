@@ -54,8 +54,9 @@ def JSquery(request):
 	return (result, data, error)
 
 def send2fivestar(line):
+	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (5 star) "+str(line), 3)
 	wid = 0
-	if line["id"]!="": int(line["id"])
+	if line["id"]!="": wid = int(line["id"])
 	if line["type"]=="movie": typ="M"
 	elif line["type"]=="episode": typ="S"
 	else: typ="V"
@@ -111,11 +112,12 @@ def send2fivestar(line):
 	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
 	url = url + "&season=" + str(season)
 	url = url + "&episode=" + str(episode)
-	url = url + "&version=1.08"
+	url = url + "&version=1.09"
 	url = url + "&date=" + line["date"]
+	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (5 star) "+url, 3)
 	try:
 		request = urllib2.Request(url)
-		urllib2.urlopen(request)
+		response = urllib2.urlopen(request)
 	except:
 		pass
 
@@ -127,7 +129,7 @@ def videoEnd():
 		retry=retry+1
 		time.sleep(0.1)
 
-	if xsource=='': xsource="player"
+	if xsource=='': xsource="player"	
 	xtitle = xbmc.getInfoLabel('ListItem.Title').decode("utf-8").strip()
 	if xtitle=="" : xtitle = player_monitor.title
 	xyear = xbmc.getInfoLabel('ListItem.Year')
@@ -141,11 +143,14 @@ def videoEnd():
 	xfanart = xbmc.getInfoLabel('ListItem.Art(fanart)').decode("utf-8")
 	if xfanart=="": xfanart = player_monitor.fanart
 	xshow = xbmc.getInfoLabel('ListItem.TVShowTitle').decode("utf-8").strip()
-	if xshow=="": xshow = player_monitor.showtitle
 	xseason = xbmc.getInfoLabel('ListItem.Season')
-	if xseason=="": xseason = player_monitor.season
 	xepisode = xbmc.getInfoLabel('ListItem.Episode')
-	if xepisode=="": xepisode = player_monitor.episode
+	try:
+		if xshow=="": xshow = player_monitor.showtitle
+		if xseason=="": xseason = player_monitor.season
+		if xepisode=="": xepisode = player_monitor.episode
+	except:
+		pass
 	xvideo = player_monitor.video		
 	xfile = xbmc.getInfoLabel('ListItem.FileNameAndPath').decode("utf-8").strip()
 	
@@ -158,6 +163,12 @@ def videoEnd():
 		ads = xsource.split("/")
 		if len(ads) > 2: xsource = ads[2]
 	
+	if xsource==addon.getSetting('black1'): return
+	if xsource==addon.getSetting('black2'): return
+	if xsource==addon.getSetting('black3'): return
+	if xsource==addon.getSetting('black4'): return
+	if xsource==addon.getSetting('black5'): return
+
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
@@ -210,6 +221,7 @@ class KodiPlayer(xbmc.Player):
 		request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
 		result, data = JSquery(request)[:2]
 		item=data["item"]
+		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start play) "+str(item), 3)
 		if "title" in item: player_monitor.title = item["title"]
 		else: player_monitor.title = ""
 		if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		

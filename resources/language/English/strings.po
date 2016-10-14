@@ -78,11 +78,11 @@ msgid "Addon List (old format)"
 msgstr ""
 
 msgctxt "#30020"
-msgid "theMovieDb user"
+msgid "5 star user"
 msgstr ""
 
 msgctxt "#30021"
-msgid "theMovieDb password"
+msgid "5 star password"
 msgstr ""
 
 msgctxt "#30022"
@@ -123,4 +123,8 @@ msgstr ""
 
 msgctxt "#30031"
 msgid "Play with "
+msgstr ""
+
+msgctxt "#30032"
+msgid "Blacklist"
 msgstr ""

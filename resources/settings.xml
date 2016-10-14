@@ -19,6 +19,14 @@
     <setting id="videos" visible="eq(-5,true)" label="30025" type="bool" default="true" />
 </category>
 
+<category label="30032">
+    <setting id="black1" type="text" label="30032" default=""/>
+    <setting id="black2" type="text" label="30032" default=""/>
+    <setting id="black3" type="text" label="30032" default=""/>
+    <setting id="black4" type="text" label="30032" default=""/>
+    <setting id="black5" type="text" label="30032" default=""/>
+</category>
+
 <category label="30029">
 	<setting id="custom_path_enable" type="bool" label="30006" default="false"/>
 	<setting id="custom_path" enable="eq(-1,true)" visible="eq(-1,true)" subsetting="true" type="folder" label="30007" default="" />
