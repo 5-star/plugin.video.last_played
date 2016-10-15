@@ -163,11 +163,11 @@ def videoEnd():
 		ads = xsource.split("/")
 		if len(ads) > 2: xsource = ads[2]
 	
-	if xsource==addon.getSetting('black1'): return
-	if xsource==addon.getSetting('black2'): return
-	if xsource==addon.getSetting('black3'): return
-	if xsource==addon.getSetting('black4'): return
-	if xsource==addon.getSetting('black5'): return
+	if xsource.lower()==addon.getSetting('black1').lower(): return
+	if xsource.lower()==addon.getSetting('black2').lower(): return
+	if xsource.lower()==addon.getSetting('black3').lower(): return
+	if xsource.lower()==addon.getSetting('black4').lower(): return
+	if xsource.lower()==addon.getSetting('black5').lower(): return
 
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
 	if xbmcvfs.exists(txtfile):
