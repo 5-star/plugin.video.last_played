@@ -37,7 +37,7 @@ https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/rep
  
 Release history
 ---------------
-1.1.0 - Blacklist and new site<br />
+1.1.8 - Blacklist and new site<br />
 1.0.9 - Skin handling<br />
 1.0.8 - New replay method and some minor improvements<br />
 1.0.7 - New list format and add 5star-movies<br />
