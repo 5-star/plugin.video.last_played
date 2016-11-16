@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.last_played" name="Last Played" version="1.1.8" provider-name="Luis Rodrigues">
+<addon id="plugin.video.last_played" name="Last Played" version="1.1.9" provider-name="Luis Rodrigues">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>

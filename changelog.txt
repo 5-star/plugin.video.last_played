@@ -1,4 +1,5 @@
-[B]1.1.8[/B] - Blacklist and New Sitre
+[B]1.1.9[/B] - Wildcard Blacklist
+[B]1.1.8[/B] - Blacklist and New Site
 [B]1.0.8[/B] - New replay method and some minor improvements
 [B]1.0.7[/B] - New list format and add 5star-movies
 [B]1.0.6[/B] - Configuration options

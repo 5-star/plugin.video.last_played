@@ -37,6 +37,7 @@ https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/rep
  
 Release history
 ---------------
+1.1.8 - Wildcard Blacklist<br />
 1.1.8 - Blacklist and new site<br />
 1.0.9 - Skin handling<br />
 1.0.8 - New replay method and some minor improvements<br />

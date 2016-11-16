@@ -126,5 +126,13 @@ msgid "Play with "
 msgstr ""
 
 msgctxt "#30032"
-msgid "Blacklist"
+msgid "Blacklist Addon"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Blacklist Folder"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Blacklist Video"
 msgstr ""

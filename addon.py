@@ -105,15 +105,16 @@ def list_groups():
 						nm = group
 						ads = group.split("/")
 						if len(ads) > 2: nm = ads[2]
-						try:
-							la = xbmcaddon.Addon(nm)
-							nm = la.getAddonInfo('name')
-							ic = la.getAddonInfo('icon')
-						except Exception:
-							if group==lang(30002): ic = imgPath+'/resources/movie.png'
-							elif group==lang(30003): ic = imgPath+'/resources/episode.png'
-							elif group==lang(30004): ic = imgPath+'/resources/musicvideo.png'
-							else: ic = imgPath+'/resources/addons.png'
+						if group==lang(30002): ic = imgPath+'/resources/movie.png'
+						elif group==lang(30003): ic = imgPath+'/resources/episode.png'
+						elif group==lang(30004): ic = imgPath+'/resources/musicvideo.png'
+						else:
+							try:
+								la = xbmcaddon.Addon(nm)
+								nm = la.getAddonInfo('name')
+								ic = la.getAddonInfo('icon')
+							except Exception:
+								ic = imgPath+'/resources/addons.png'
 					addDirectoryItem(addon_handle, url({'menu': group.encode("utf-8")}), ListItem(nm, iconImage=ic), True)
 		f.close()
 	if xbmcvfs.exists(oldfile):

@@ -127,4 +127,12 @@ msgstr "Tocar com "
 
 msgctxt "#30032"
 msgid "Blacklist"
-msgstr "Lista negra"
+msgstr "Addons excluidos"
+
+msgctxt "#30033"
+msgid "Folders excluidos"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Videos excluidos"
+msgstr ""

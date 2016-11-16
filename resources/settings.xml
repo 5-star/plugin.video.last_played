@@ -20,7 +20,9 @@
 </category>
 
 <category label="30029">
-    <setting id="blacklist" type="addon" label="30032" addontype="xbmc.addon.video" multiselect="true" default=""/>
+    <setting id="blackadddon" type="addon" label="30032" addontype="xbmc.addon.video" multiselect="true" default=""/>
+    <setting id="blackfolder" type="text" label="30033" default="folder1xxx,folder2xxx"/>
+    <setting id="blackvideo" type="text" label="30034" default="video1xxx,video2xxx"/>
 	<setting id="custom_path_enable" type="bool" label="30006" default="false"/>
 	<setting id="custom_path" enable="eq(-1,true)" visible="eq(-1,true)" subsetting="true" type="folder" label="30007" default="" />
     <setting id="enable_debug" label="30013" type="bool" default="false" />

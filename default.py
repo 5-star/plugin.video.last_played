@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os, time
+import fnmatch
 import json
 import urllib, urllib2
 import xbmc
@@ -158,14 +159,18 @@ def videoEnd():
 		if xtype=="movie": xsource=lang(30002)
 		elif xtype=="episode": xsource=lang(30003)
 		elif xtype=="musicvideo": xsource=lang(30004)
-		else: xsource=lang(30022)
+		else: xsource=xtype
 	else:
 		ads = xsource.split("/")
 		if len(ads) > 2: xsource = ads[2]
 	
 	# if source is on blacklist, do not keep
-	if addon.getSetting('blacklist').lower().find(xsource.lower())>=0: return
-
+	if addon.getSetting('blackadddon').lower().find(xsource.lower())>=0: return
+	for dir in addon.getSetting('blackfolder').lower().split(","):
+		if xsource.lower().find(dir)>=0: return
+	for vid in addon.getSetting('blackvideo').lower().split(","):
+		if xtitle.lower().find(vid)>=0: return
+	
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
