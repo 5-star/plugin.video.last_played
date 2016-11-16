@@ -166,10 +166,12 @@ def videoEnd():
 	
 	# if source is on blacklist, do not keep
 	if addon.getSetting('blackadddon').lower().find(xsource.lower())>=0: return
-	for dir in addon.getSetting('blackfolder').lower().split(","):
-		if xsource.lower().find(dir)>=0: return
-	for vid in addon.getSetting('blackvideo').lower().split(","):
-		if xtitle.lower().find(vid)>=0: return
+	if addon.getSetting('blackfolder')!="":
+		for dir in addon.getSetting('blackfolder').lower().split(","):
+			if xsource.lower().find(dir)>=0: return
+	if addon.getSetting('blackvideo')!="":
+		for vid in addon.getSetting('blackvideo').lower().split(","):
+			if xtitle.lower().find(vid)>=0: return
 	
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end source) "+xsource, 3)
 	if xbmcvfs.exists(txtfile):
