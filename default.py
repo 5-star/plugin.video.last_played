@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os, time
-import fnmatch
 import json
 import urllib, urllib2
 import xbmc
