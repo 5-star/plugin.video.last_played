@@ -95,7 +95,7 @@ def send2fivestar(line):
 
 	xvideo = line["file"]
 	if "video" in line and line["video"]!="": xvideo = line["video"]
-	url = "https://www.5star-movies.com/WebService.asmx/kodiWatch?tmdbId="
+	url = "https://5star-movies.com/WebService.asmx/kodiWatch?tmdbId="
 	url = url + "&tvdbId=" + tvdbId
 	url = url + "&imdbId=" + imdbId
 	url = url + "&kodiId=" + str(wid)
