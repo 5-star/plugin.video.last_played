@@ -135,7 +135,7 @@ def videoEnd():
 	xyear = xbmc.getInfoLabel('ListItem.Year')
 	if xyear is None : xyear = player_monitor.year
 	xid = xbmc.getInfoLabel('ListItem.DBID')
-	if xid=="": xid = player_monitor.id
+	if xid=="": xid = player_monitor.DBID
 	xtype = xbmc.getInfoLabel('ListItem.DBTYPE')
 	if xtype=="": xtype = player_monitor.type
 	xthumb = xbmc.getInfoLabel('ListItem.Art(thumb)').decode("utf-8")
@@ -240,8 +240,8 @@ class KodiPlayer(xbmc.Player):
 		else: player_monitor.season = ""
 		if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
 		else: player_monitor.episode = ""
-		if "id" in item: player_monitor.id = item["id"]
-		else: player_monitor.id = ""
+		if "id" in item: player_monitor.DBID = item["id"]
+		else: player_monitor.DBID = ""
 		if "type" in item: player_monitor.type = item["type"]
 		else: player_monitor.type = ""
 		
