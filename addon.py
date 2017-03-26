@@ -142,6 +142,7 @@ def list_old_items(nbrLines):
 				li.setArt({ "poster" : item[2].strip() })
 				addDirectoryItem(addon_handle, item[1].strip(), li, False)
 
+# Menu				
 if menu is None or menu[0]=="top":
 	if single_list == "true":
 		list_items("*", list_size)
