@@ -46,8 +46,8 @@ msgid "Show Time"
 msgstr "Mostrar Hora"
 
 msgctxt "#30012"
-msgid "Keep history at 5 Star Movies"
-msgstr "Manter histórico em 5 Start Movies"
+msgid "Keep history at StarMovies"
+msgstr "Manter histórico em StartMovies"
 
 msgctxt "#30013"
 msgid "Enable debug"
@@ -78,12 +78,12 @@ msgid "Addon List (old format)"
 msgstr "Lista de Addons (formato antigo)"
 
 msgctxt "#30020"
-msgid "5 star user"
-msgstr "5 star - utilizador"
+msgid "StarMovies user"
+msgstr "StarMovies - utilizador"
 
 msgctxt "#30021"
-msgid "5 star password"
-msgstr "5 star - palavra passe"
+msgid "StarMovies password"
+msgstr "StarMovies - palavra passe"
 
 msgctxt "#30022"
 msgid "Library Videos"
@@ -110,8 +110,8 @@ msgid "General"
 msgstr "Geral"
 
 msgctxt "#30028"
-msgid "5 Star"
-msgstr "5 Star"
+msgid "StarMovies"
+msgstr "StarMovies"
 
 msgctxt "#30029"
 msgid "Advanced"

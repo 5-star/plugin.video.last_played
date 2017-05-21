@@ -46,7 +46,7 @@ msgid "Show Time"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Keep history at 5 Star Movies"
+msgid "Keep history at StarMovies"
 msgstr ""
 
 msgctxt "#30013"
@@ -78,11 +78,11 @@ msgid "Addon List (old format)"
 msgstr ""
 
 msgctxt "#30020"
-msgid "5 star user"
+msgid "StarMovies user"
 msgstr ""
 
 msgctxt "#30021"
-msgid "5 star password"
+msgid "StarMovies password"
 msgstr ""
 
 msgctxt "#30022"
@@ -110,7 +110,7 @@ msgid "General"
 msgstr ""
 
 msgctxt "#30028"
-msgid "5 Star"
+msgid "StarMovies"
 msgstr ""
 
 msgctxt "#30029"

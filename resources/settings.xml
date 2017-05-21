@@ -11,7 +11,7 @@
 </category>
 
 <category label="30028">
-    <setting id="fivestar" label="30012" type="bool" default="false" />
+    <setting id="starmovies" label="30012" type="bool" default="false" />
     <setting id="TMDBusr" visible="eq(-1,true)" subsetting="true" type="text" label="30020" default=""/>
     <setting id="TMDBpwd" visible="eq(-2,true)" subsetting="true" type="text" label="30021" default="" option="hidden" />
     <setting id="movies" visible="eq(-3,true)" label="30023" type="bool" default="true" />

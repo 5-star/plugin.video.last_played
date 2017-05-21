@@ -15,7 +15,7 @@ else:
 	if not os.path.exists(txtpath):
 		os.makedirs(txtpath)
 txtfile = txtpath + "lastPlayed.json"
-fivestar = addon.getSetting('fivestar')
+starmovies = addon.getSetting('starmovies')
 enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
 
@@ -53,8 +53,8 @@ def JSquery(request):
 			else: error = response['error']
 	return (result, data, error)
 
-def send2fivestar(line):
-	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (5 star) "+str(line), 3)
+def send2starmovies(line):
+	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (starmovies) "+str(line), 3)
 	wid = 0
 	if line["id"]!="": wid = int(line["id"])
 	if line["type"]=="movie": typ="M"
@@ -95,7 +95,7 @@ def send2fivestar(line):
 
 	xvideo = line["file"]
 	if "video" in line and line["video"]!="": xvideo = line["video"]
-	url = "https://5star-movies.com/WebService.asmx/kodiWatch?tmdbId="
+	url = "https://www.starmovies.org/WebService.asmx/kodiWatch?tmdbId="
 	url = url + "&tvdbId=" + tvdbId
 	url = url + "&imdbId=" + imdbId
 	url = url + "&kodiId=" + str(wid)
@@ -114,7 +114,7 @@ def send2fivestar(line):
 	url = url + "&episode=" + str(episode)
 	url = url + "&version=1.19"
 	url = url + "&date=" + line["date"]
-	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (5 star) "+url, 3)
+	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (starmovies) "+url, 3)
 	try:
 		request = urllib2.Request(url)
 		response = urllib2.urlopen(request)
@@ -191,14 +191,14 @@ def videoEnd():
 			lines.insert(0, line)
 			replay = "S"
 			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final replay) "+str(line), 3)
-			if fivestar	== "true": send2fivestar(line)
+			if starmovies	== "true": send2starmovies(line)
 			break
 
 	if replay=="N":
 		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
 		lines.insert(0, newline)
 		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
-		if fivestar	== "true": send2fivestar(newline)
+		if starmovies	== "true": send2starmovies(newline)
 		if len(lines)>100:
 			del lines[len(lines)-1]
 
