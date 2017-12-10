@@ -213,13 +213,11 @@ class KodiPlayer(xbmc.Player):
 
 	@classmethod
 	def onPlayBackEnded(self):
-		if xbmc.getCondVisibility('Player.HasVideo'):
-			videoEnd()
+		videoEnd()
 
 	@classmethod
 	def onPlayBackStopped(self):
-		if xbmc.getCondVisibility('Player.HasVideo'):
-			videoEnd()
+		videoEnd()
 
 	def onPlayBackStarted(self):
 		if xbmc.getCondVisibility('Player.HasVideo'):
