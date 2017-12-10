@@ -213,37 +213,40 @@ class KodiPlayer(xbmc.Player):
 
 	@classmethod
 	def onPlayBackEnded(self):
-		videoEnd()
+		if xbmc.getCondVisibility('Player.HasVideo'):
+			videoEnd()
 
 	@classmethod
 	def onPlayBackStopped(self):
-		videoEnd()
+		if xbmc.getCondVisibility('Player.HasVideo'):
+			videoEnd()
 
 	def onPlayBackStarted(self):
-		player_monitor.video = player_monitor.getPlayingFile()
-		request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
-		result, data = JSquery(request)[:2]
-		item=data["item"]
-		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start play) "+str(item), 3)
-		if "title" in item: player_monitor.title = item["title"]
-		else: player_monitor.title = ""
-		if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
-		if "year" in item: player_monitor.year = item["year"]
-		else: player_monitor.year = ""
-		if "thumbnail" in item: player_monitor.thumbnail = item["thumbnail"]
-		else: player_monitor.thumbnail = ""
-		if "fanart" in item: player_monitor.fanart = item["fanart"]
-		else: player_monitor.fanart = ""
-		if "showtitle" in item: player_monitor.showtitle = item["showtitle"]
-		else: player_monitor.showtitle = ""
-		if "season" in item and item["season"]>0: player_monitor.season = item["season"]
-		else: player_monitor.season = ""
-		if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
-		else: player_monitor.episode = ""
-		if "id" in item: player_monitor.DBID = item["id"]
-		else: player_monitor.DBID = ""
-		if "type" in item: player_monitor.type = item["type"]
-		else: player_monitor.type = ""
+		if xbmc.getCondVisibility('Player.HasVideo'):
+			player_monitor.video = player_monitor.getPlayingFile()
+			request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
+			result, data = JSquery(request)[:2]
+			item=data["item"]
+			if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start play) "+str(item), 3)
+			if "title" in item: player_monitor.title = item["title"]
+			else: player_monitor.title = ""
+			if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
+			if "year" in item: player_monitor.year = item["year"]
+			else: player_monitor.year = ""
+			if "thumbnail" in item: player_monitor.thumbnail = item["thumbnail"]
+			else: player_monitor.thumbnail = ""
+			if "fanart" in item: player_monitor.fanart = item["fanart"]
+			else: player_monitor.fanart = ""
+			if "showtitle" in item: player_monitor.showtitle = item["showtitle"]
+			else: player_monitor.showtitle = ""
+			if "season" in item and item["season"]>0: player_monitor.season = item["season"]
+			else: player_monitor.season = ""
+			if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
+			else: player_monitor.episode = ""
+			if "id" in item: player_monitor.DBID = item["id"]
+			else: player_monitor.DBID = ""
+			if "type" in item: player_monitor.type = item["type"]
+			else: player_monitor.type = ""
 		
 player_monitor = KodiPlayer()
 
