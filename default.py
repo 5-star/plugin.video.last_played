@@ -2,7 +2,6 @@
 import os, time
 import json
 import urllib, urllib2
-import ssl
 import xbmc
 import xbmcaddon
 import xbmcvfs
@@ -117,9 +116,8 @@ def send2starmovies(line):
 	url = url + "&date=" + line["date"]
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (starmovies) "+url, 3)
 	try:
-		context = ssl._create_unverified_context()
 		request = urllib2.Request(url)
-		response = urllib2.urlopen(request, context=context)
+		response = urllib2.urlopen(request)
 	except:
 		pass
 
