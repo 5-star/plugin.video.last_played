@@ -28,7 +28,7 @@ Enable Debug: Display an extra menu option allowing to clear the full list, and 
 Installation
 ------------
 - Download the 5 star repo<br />
-https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/repository.5star-1.0.2.zip<br />
+https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/repository.5star-1.0.7.zip<br />
 - Open Kodi<br />
 - Go to `System -> Settings -> Add-ons<br />
 - Select Install from zip file` -> Select the downloaded zip file<br />
