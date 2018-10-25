@@ -21,14 +21,13 @@ Group by Source: Display separate groups for each addon used to play<br />
 Number of lines on top: If grouping is active, display before the groups some of the last played movies or shows<br />
 Show Date: Display for each item the date when it was played<br />
 Show Time: Display time of play<br />
-Play History at 5 Star Movies: The play history can be viewed privately on the www.5star.movies site<br />
+Play History at Star Movies: The play history can be viewed privately on the www.starmovies.org site<br />
 Custom Path: Location of non-library play history. Point all devices to the same location to synch non-library history<br />
 Enable Debug: Display an extra menu option allowing to clear the full list, and logs information to help solve eventual errors<br />
 
 Installation
 ------------
-- Download the 5 star repo<br />
-https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/repository.5star-1.0.7.zip<br />
+- Download the 5 star repo from http://www.starmovies.org/kodi.zip<br />
 - Open Kodi<br />
 - Go to `System -> Settings -> Add-ons<br />
 - Select Install from zip file` -> Select the downloaded zip file<br />
@@ -37,6 +36,7 @@ https://github.com/5-star/repository.5star/blob/master/zips/repository.5star/rep
  
 Release history
 ---------------
+1.2.2 - Update for Kodi 18<br />
 1.1.8 - Wildcard Blacklist<br />
 1.1.8 - Blacklist and new site<br />
 1.0.9 - Skin handling<br />
