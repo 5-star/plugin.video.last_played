@@ -37,7 +37,7 @@ def url(pQuery):
 	return sys.argv[0] + '?' + urllib.urlencode(pQuery)
 
 def list_items(selGroup, nbrLines):
-	xbmcplugin.setContent(addon_handle, "movies")
+	xbmcplugin.setContent(addon_handle, "files")
 	if xbmcvfs.exists(txtfile):
 		f = xbmcvfs.File(txtfile)
 		nbr=0 # nbr of line on screen (selected)
