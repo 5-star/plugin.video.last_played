@@ -8,11 +8,13 @@
 	</extension>
 	<extension point="xbmc.service" library="default.py" />
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Last Played</summary>
-		<summary lang="pt">Ultimos Vistos</summary>
-		<description lang="en">List of the last movies, episodes and music played, including streaming sources from any addon</description>
-		<description lang="pt">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
-		<disclaimer lang="en"></disclaimer>
+		<summary lang="en_US">Last Played</summary>
+		<summary lang="pt_PT">Ultimos Vistos</summary>
+		<summary lang="pt_BR">Ultimos Vistos</summary>
+		<description lang="en_US">List of the last movies, episodes and music played, including streaming sources from any addon</description>
+		<description lang="pt_PT">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
+		<description lang="pt_BR">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
+		<disclaimer lang="en_US"></disclaimer>
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
 		<source>https://github.com/5-star/plugin.video.last_played</source>
