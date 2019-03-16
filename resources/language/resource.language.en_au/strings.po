@@ -74,7 +74,7 @@ msgid "Type"
 msgstr ""
 
 msgctxt "#30019"
-msgid "Addon List (old format)"
+msgid "Music"
 msgstr ""
 
 msgctxt "#30020"
@@ -136,3 +136,4 @@ msgstr ""
 msgctxt "#30034"
 msgid "Blacklist Video"
 msgstr ""
+

@@ -29,7 +29,6 @@ if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom
 else:
 	txtpath = xbmc.translatePath(addon.getAddonInfo('profile')).decode("utf-8")
 txtfile = txtpath + "lastPlayed.json"
-oldfile = txtpath + "list.txt"
 imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')).decode('utf-8')
 group_by_type=lang(30018)
 
@@ -117,36 +116,11 @@ def list_groups():
 								ic = imgPath+'/resources/addons.png'
 					addDirectoryItem(addon_handle, url({'menu': group.encode("utf-8")}), ListItem(nm, iconImage=ic), True)
 		f.close()
-	if xbmcvfs.exists(oldfile):
-		addDirectoryItem(addon_handle, url({'menu': 'oldlist'}), ListItem(lang(30019)), True)
-
-def list_old_items(nbrLines):
-	xbmcplugin.setContent(addon_handle, "movies")
-	if xbmcvfs.exists(oldfile):
-		f = xbmcvfs.File(oldfile)
-		lines = f.readBytes().decode("utf-8")
-		f.close()
-		nbr=1
-		for line in lines.split(chr(10)):
-			if nbr>nbrLines: break
-			item = line.split(chr(9))
-			if len(item)>3:
-				nbr=nbr+1
-				desc=''
-				if show_date == "true" and len(item)>4 : desc = desc + item[4].strip() + ' '
-				if show_time == "true" and len(item)>5: desc = desc + item[5].strip() + ' '
-				desc=desc + item[0]
-				li = ListItem(label=desc)
-				li.setProperty('IsPlayable', 'true')
-				li.setInfo(type="Video", infoLabels={ "Title": desc})
-				li.setArt({ "poster" : item[2].strip() })
-				addDirectoryItem(addon_handle, item[1].strip(), li, False)
 
 # Menu				
 if menu is None or menu[0]=="top":
 	if single_list == "true":
 		list_items("*", list_size)
-		list_old_items(list_size)
 	else:
 		xbmcplugin.setContent(addon_handle, "menu")
 		list_items("*", top_size)
@@ -183,16 +157,11 @@ elif menu[0] == 'showlist':
 			addDirectoryItem(addon_handle, url({}), ListItem(str(line)), False)
 		endOfDirectory(addon_handle)
 elif menu[0] == 'deletelist':
-	if xbmcvfs.exists(oldfile):
-		xbmcvfs.delete(oldfile)
 	if xbmcvfs.exists(txtfile):
 		lines = []
 		f = xbmcvfs.File(txtfile, 'w')
 		json.dump(lines, f)
 		f.close()
-elif menu[0] == 'oldlist':
-	list_old_items(list_size)
-	endOfDirectory(addon_handle)
 else:
 	list_items(menu[0], list_size)
 	endOfDirectory(addon_handle)

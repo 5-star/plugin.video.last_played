@@ -74,8 +74,8 @@ msgid "Type"
 msgstr "Tipo"
 
 msgctxt "#30019"
-msgid "Addon List (old format)"
-msgstr "Lista de Addons (formato antigo)"
+msgid "Music"
+msgstr "Musica"
 
 msgctxt "#30020"
 msgid "StarMovies user"

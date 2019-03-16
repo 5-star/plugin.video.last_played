@@ -17,8 +17,9 @@ else:
 		os.makedirs(txtpath)
 txtfile = txtpath + "lastPlayed.json"
 starmovies = addon.getSetting('starmovies')
-enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
+vidPos=1
+vidTot=1000
 
 # Builds JSON request with provided json data
 def buildRequest(method, params, jsonrpc='2.0', rid='1'):
@@ -56,15 +57,18 @@ def JSquery(request):
 
 def send2starmovies(line):
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (starmovies) "+str(line), 3)
+	if vidPos/vidTot<0.8: return
 	wid = 0
 	if line["id"]!="": wid = int(line["id"])
 	if line["type"]=="movie": typ="M"
 	elif line["type"]=="episode": typ="S"
+	elif line["type"]=="song": typ="P"
 	else: typ="V"
 
-	if typ=="M" and addon.getSetting('movies') != "true": return
-	if typ=="S" and addon.getSetting('tv') != "true": return
-	if typ=="V" and addon.getSetting('videos') != "true": return
+	if typ=="M" and addon.getSetting('smovies') != "true": return
+	if typ=="S" and addon.getSetting('stv') != "true": return
+	if typ=="V" and addon.getSetting('svideos') != "true": return
+	if typ=="P" : return
 
 	imdbId = ""
 	tvdbId = ""
@@ -74,6 +78,7 @@ def send2starmovies(line):
 	episode = line["episode"]
 	thumbnail = line["thumbnail"]
 	fanart = line["fanart"]
+
 	if wid>0:
 		if typ=="M":
 			request = buildRequest('VideoLibrary.GetMovieDetails', {'movieid' : wid, 'properties' : ['imdbnumber', 'originaltitle']})
@@ -113,7 +118,7 @@ def send2starmovies(line):
 	url = url + "&showtitle=" + urllib.quote(showTitle.encode("utf-8"))
 	url = url + "&season=" + str(season)
 	url = url + "&episode=" + str(episode)
-	url = url + "&version=1.19"
+	url = url + "&version=1.22"
 	url = url + "&date=" + line["date"]
 	if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (starmovies) "+url, 3)
 	try:
@@ -153,7 +158,7 @@ def videoEnd():
 		if xepisode=="": xepisode = player_monitor.episode
 	except:
 		pass
-	xvideo = player_monitor.video		
+	xvideo = player_monitor.video.decode("utf-8").strip()	
 	xfile = xbmc.getInfoLabel('ListItem.FileNameAndPath').decode("utf-8").strip()
 	
 	if xid!="" and int(xid)>0:
@@ -165,6 +170,12 @@ def videoEnd():
 		ads = xsource.split("/")
 		if len(ads) > 2: xsource = ads[2]
 	
+	# if source is on blacklist, do not keep
+	if xtype=="movie" and addon.getSetting('movies') != "true": return
+	if xtype=="episode" and addon.getSetting('tv') != "true": return
+	if xtype=="song" and addon.getSetting('videos') != "true": return
+	if xtype!="movie" and xtype!="episode" and xtype!="song" and addon.getSetting('videos') != "true": return
+
 	# if source is on blacklist, do not keep
 	if addon.getSetting('blackadddon').lower().find(xsource.lower())>=0: return
 	if addon.getSetting('blackfolder')!="":
@@ -197,7 +208,7 @@ def videoEnd():
 			break
 
 	if replay=="N":
-		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S")}
+		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S") }
 		lines.insert(0, newline)
 		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
 		if starmovies	== "true": send2starmovies(newline)
@@ -208,23 +219,29 @@ def videoEnd():
 		f = xbmcvfs.File(txtfile, 'w')
 		json.dump(lines, f)
 		f.close()
-
+		
 class KodiPlayer(xbmc.Player):
 	def __init__(self, *args, **kwargs):
 		xbmc.Player.__init__(self)
 
 	@classmethod
 	def onPlayBackEnded(self):
-		if xbmc.getInfoLabel('ListItem.DBTYPE')!="song":
-			videoEnd()
+		videoEnd()
 
 	@classmethod
 	def onPlayBackStopped(self):
-		if xbmc.getInfoLabel('ListItem.DBTYPE')!="song":
-			videoEnd()
+		videoEnd()
 
 	def onPlayBackStarted(self):
-		#if xbmc.getCondVisibility('Player.HasVideo'):
+		player_monitor.title = ""
+		player_monitor.year = ""
+		player_monitor.thumbnail = ""
+		player_monitor.fanart = ""
+		player_monitor.showtitle = ""
+		player_monitor.season = ""
+		player_monitor.episode = ""
+		player_monitor.DBID = ""
+		player_monitor.type = ""
 		if xbmc.getCondVisibility('Player.HasMedia'):
 			player_monitor.video = player_monitor.getPlayingFile()
 			request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
@@ -233,28 +250,27 @@ class KodiPlayer(xbmc.Player):
 				item=data["item"]
 				if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (start play) "+str(item), 3)
 				if "title" in item: player_monitor.title = item["title"]
-				else: player_monitor.title = ""
 				if player_monitor.title=="" and "label" in item: player_monitor.title = item["label"]		
 				if "year" in item: player_monitor.year = item["year"]
-				else: player_monitor.year = ""
 				if "thumbnail" in item: player_monitor.thumbnail = item["thumbnail"]
-				else: player_monitor.thumbnail = ""
 				if "fanart" in item: player_monitor.fanart = item["fanart"]
-				else: player_monitor.fanart = ""
 				if "showtitle" in item: player_monitor.showtitle = item["showtitle"]
-				else: player_monitor.showtitle = ""
 				if "season" in item and item["season"]>0: player_monitor.season = item["season"]
-				else: player_monitor.season = ""
 				if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
-				else: player_monitor.episode = ""
 				if "id" in item: player_monitor.DBID = item["id"]
-				else: player_monitor.DBID = ""
 				if "type" in item: player_monitor.type = item["type"]
-				else: player_monitor.type = ""
-		
+			
+def getPosition():
+	global vidPos
+	global vidTot
+	if player_monitor.isPlaying():
+		vidPos=player_monitor.getTime()
+		vidTot=player_monitor.getTotalTime()
+
 player_monitor = KodiPlayer()
 
 while not xbmc.abortRequested:
-	xbmc.sleep(1000)
+	xbmc.sleep(5000)
+	getPosition()
 
 del player_monitor
