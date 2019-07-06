@@ -136,31 +136,23 @@ def videoEnd():
 		retry=retry+1
 		time.sleep(0.1)
 
-	if xsource=='': xsource="player"	
-	xtitle = xbmc.getInfoLabel('ListItem.Title').decode("utf-8").strip()
-	if xtitle=="" : xtitle = player_monitor.title
-	xyear = xbmc.getInfoLabel('ListItem.Year')
-	if xyear is None : xyear = player_monitor.year
-	xid = xbmc.getInfoLabel('ListItem.DBID')
-	if xid=="": xid = player_monitor.DBID
-	xtype = xbmc.getInfoLabel('ListItem.DBTYPE')
-	if xtype=="": xtype = player_monitor.type
-	xthumb = xbmc.getInfoLabel('ListItem.Art(thumb)').decode("utf-8")
-	if xthumb=="": xthumb = player_monitor.thumbnail
-	xfanart = xbmc.getInfoLabel('ListItem.Art(fanart)').decode("utf-8")
-	if xfanart=="": xfanart = player_monitor.fanart
-	xshow = xbmc.getInfoLabel('ListItem.TVShowTitle').decode("utf-8").strip()
-	xseason = xbmc.getInfoLabel('ListItem.Season')
-	xepisode = xbmc.getInfoLabel('ListItem.Episode')
+	if xsource=='': xsource="player"
+	xtitle = player_monitor.title
+	xyear = player_monitor.year
+	xid = player_monitor.DBID
+	xtype = player_monitor.type
+	xthumb = urllib.unquote(player_monitor.thumbnail).replace("image://","").rstrip("/")	
+	xfanart = urllib.unquote(player_monitor.fanart).replace("image://","").rstrip("/")
+	xfile = player_monitor.file.strip()
+	xvideo = player_monitor.video.strip()
+
 	try:
-		if xshow=="": xshow = player_monitor.showtitle
-		if xseason=="": xseason = player_monitor.season
-		if xepisode=="": xepisode = player_monitor.episode
+		xshow = player_monitor.showtitle
+		xseason = player_monitor.season
+		xepisode = player_monitor.episode
 	except:
 		pass
-	xvideo = player_monitor.video.decode("utf-8").strip()	
-	xfile = xbmc.getInfoLabel('ListItem.FileNameAndPath').decode("utf-8").strip()
-	
+
 	if xid!="" and int(xid)>0:
 		if xtype=="movie": xsource=lang(30002)
 		elif xtype=="episode": xsource=lang(30003)
@@ -169,7 +161,7 @@ def videoEnd():
 	else:
 		ads = xsource.split("/")
 		if len(ads) > 2: xsource = ads[2]
-	
+
 	# if source is on blacklist, do not keep
 	if xtype=="movie" and addon.getSetting('movies') != "true": return
 	if xtype=="episode" and addon.getSetting('tv') != "true": return
@@ -196,7 +188,6 @@ def videoEnd():
 	replay = "N"
 	for line in lines:
 		if xfile!="" and xfile==line["file"]: replay = "S"
-		if "video" in line and xvideo==line["video"]: replay = "S"
 		if replay == "S":
 			lines.remove(line)
 			line.update({"date": time.strftime("%Y-%m-%d")})
@@ -208,7 +199,7 @@ def videoEnd():
 			break
 
 	if replay=="N":
-		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video": xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S") }
+		newline = {"source":xsource, "title":xtitle, "year":xyear, "file":xfile, "video":xvideo, "id":xid, "type":xtype,"thumbnail":xthumb, "fanart":xfanart, "show":xshow, "season":xseason, "episode":xepisode, "date":time.strftime("%Y-%m-%d"), "time":time.strftime("%H:%M:%S") }
 		lines.insert(0, newline)
 		if enable_debug	== "true": xbmc.log("<<<plugin.video.last_played (end final play) "+str(newline), 3)
 		if starmovies	== "true": send2starmovies(newline)
@@ -244,7 +235,7 @@ class KodiPlayer(xbmc.Player):
 		player_monitor.type = ""
 		if xbmc.getCondVisibility('Player.HasMedia'):
 			player_monitor.video = player_monitor.getPlayingFile()
-			request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode"], "playerid": 1 }, "id": "VideoGetItem"}
+			request = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "year", "thumbnail", "fanart", "showtitle", "season", "episode", "file"], "playerid": 1 }, "id": "VideoGetItem"}
 			result, data = JSquery(request)[:2]
 			if len(data)>0:
 				item=data["item"]
@@ -259,6 +250,7 @@ class KodiPlayer(xbmc.Player):
 				if "episode" in item and item["episode"]>0: player_monitor.episode = item["episode"]
 				if "id" in item: player_monitor.DBID = item["id"]
 				if "type" in item: player_monitor.type = item["type"]
+				if "file" in item: player_monitor.file = item["file"]
 			
 def getPosition():
 	global vidPos
