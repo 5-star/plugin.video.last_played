@@ -36,6 +36,7 @@ Installation
  
 Release history
 ---------------
+1.3.1 - Fixes<br />
 1.3.0 - Setting to allow music<br />
 1.2.2 - Update for Kodi 18<br />
 1.1.8 - Wildcard Blacklist<br />
