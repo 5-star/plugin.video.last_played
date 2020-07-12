@@ -1,0 +1,138 @@
+msgid ""
+msgstr ""
+
+msgctxt "#30001"
+msgid "Number of lines"
+msgstr "Počet riadkov"
+
+msgctxt "#30002"
+msgid "Library Movies"
+msgstr "Knižnica filmov"
+
+msgctxt "#30003"
+msgid "Library Episodes"
+msgstr "Knižnica epizód"
+
+msgctxt "#30004"
+msgid "Library Music Videos"
+msgstr "Knižnica hudobných videí"
+
+msgctxt "#30005"
+msgid "Group by"
+msgstr "Triediť podľa"
+
+msgctxt "#30006"
+msgid "Store list in a custom path"
+msgstr "Ukladať zoznam do vlastnej cesty"
+
+msgctxt "#30007"
+msgid "List location"
+msgstr "Umiestnenie zoznamu"
+
+msgctxt "#30008"
+msgid "Remove from list"
+msgstr ""
+
+msgctxt "#30009"
+msgid "Single list"
+msgstr "Jednoduchý zoznam"
+
+msgctxt "#30010"
+msgid "Show Date"
+msgstr "Zobraziť dátum"
+
+msgctxt "#30011"
+msgid "Show Time"
+msgstr "Zobraziť čas"
+
+msgctxt "#30012"
+msgid "Keep history at StarMovies"
+msgstr "Ponechať históriu na StarMovies"
+
+msgctxt "#30013"
+msgid "Enable debug"
+msgstr "Povoliť ladenie"
+
+msgctxt "#30014"
+msgid "Show Addon History List"
+msgstr "Zobraziť zoznam histórie doplnku"
+
+msgctxt "#30015"
+msgid "Delete Addon History List"
+msgstr "Odstrániť zoznam histórie doplnku"
+
+msgctxt "#30016"
+msgid "*** There is no Addon History ***"
+msgstr "*** Neexistuje žiadna história doplnku ***"
+
+msgctxt "#30017"
+msgid "Source"
+msgstr "Zdroj"
+
+msgctxt "#30018"
+msgid "Type"
+msgstr "Typ"
+
+msgctxt "#30019"
+msgid "Music"
+msgstr "Hudba"
+
+msgctxt "#30020"
+msgid "StarMovies user"
+msgstr "Používateľ StarMovies"
+
+msgctxt "#30021"
+msgid "StarMovies password"
+msgstr "Heslo StarMovies"
+
+msgctxt "#30022"
+msgid "Library Videos"
+msgstr "Knižnica Videí"
+
+msgctxt "#30023"
+msgid "Movies"
+msgstr "Videá"
+
+msgctxt "#30024"
+msgid "TV"
+msgstr "TV"
+
+msgctxt "#30025"
+msgid "Videos"
+msgstr "Videá"
+
+msgctxt "#30026"
+msgid "Number of lines on top from all sources and types"
+msgstr "Počet zobrazených riadkov pred skupinami (všetky médiá a typy)"
+
+msgctxt "#30027"
+msgid "General"
+msgstr "Všeobecné"
+
+msgctxt "#30028"
+msgid "StarMovies"
+msgstr "StarMovies"
+
+msgctxt "#30029"
+msgid "Advanced"
+msgstr "Pokročilé"
+
+msgctxt "#30030"
+msgid "New install. Start watching and it will display here."
+msgstr "Nová inštalácia. Pozrite si niečo a nájdete to zobrazené tu."
+
+msgctxt "#30031"
+msgid "Play with "
+msgstr "Prehrať s"
+
+msgctxt "#30032"
+msgid "Blacklist Addon"
+msgstr "Zakázať doplnok"
+
+msgctxt "#30033"
+msgid "Blacklist Folder"
+msgstr "Zakázať priečinok"
+
+msgctxt "#30034"
+msgid "Blacklist Video"
+msgstr "Zakázať video"
