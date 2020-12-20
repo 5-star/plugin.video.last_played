@@ -142,7 +142,7 @@ if menu is None or menu[0]=="top":
             addDirectoryItem(addon_handle, url({'menu': 'deletelist'}), xbmcgui.ListItem(lang(30016)), True)
     endOfDirectory(addon_handle)
 elif menu[0] == 'remove':
-    #lid = args.get('id', None)
+    lid = args.get('id', None)
     if xbmcvfs.exists(txtfile) and lid is not None:
         f = xbmcvfs.File(txtfile)
         lines = json.load(f)
