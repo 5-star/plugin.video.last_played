@@ -27,7 +27,7 @@ Enable Debug: Display an extra menu option allowing to clear the full list, and 
 
 Installation
 ------------
-- Download the 5 star repo from http://www.starmovies.org/kodi.zip<br />
+- Download the 5 star repo from https://www.starmovies.org/kodi.zip<br />
 - Open Kodi<br />
 - Go to `System -> Settings -> Add-ons<br />
 - Select Install from zip file` -> Select the downloaded zip file<br />
@@ -36,6 +36,7 @@ Installation
  
 Release history
 ---------------
+6.0.1 - Fixes
 6.0.0 - Kodi 19
 1.3.1 - Fixes<br />
 1.3.0 - Setting to allow music<br />
