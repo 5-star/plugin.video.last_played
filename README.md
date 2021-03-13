@@ -36,8 +36,8 @@ Installation
  
 Release history
 ---------------
-6.0.1 - Fixes
-6.0.0 - Kodi 19
+6.0.1 - Fixes<br />
+6.0.0 - Kodi 19<br />
 1.3.1 - Fixes<br />
 1.3.0 - Setting to allow music<br />
 1.2.2 - Update for Kodi 18<br />
