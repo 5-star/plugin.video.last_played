@@ -11,12 +11,14 @@
 	<summary lang="en_NZ">Last Played</summary>
 		<summary lang="pt_PT">Ultimos Vistos</summary>
 		<summary lang="pt_BR">Ultimos Vistos</summary>
+		<summary lang="sk_sk">Last Played (naposledy videné)</summary>
 		<description lang="en_GB">List of the last movies, episodes and music played, including streaming sources from any addon</description>
 		<description lang="en_US">List of the last movies, episodes and music played, including streaming sources from any addon</description>
 		<description lang="en_AU">List of the last movies, episodes and music played, including streaming sources from any addon</description>
 		<description lang="en_NZ">List of the last movies, episodes and music played, including streaming sources from any addon</description>
 		<description lang="pt_PT">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
 		<description lang="pt_BR">Ultimos filmes, episodios e musicas tocadas, incluindo fontes de streaming de qualquer addon</description>
+		<description lang="sk_SK">Naposledy prehrávané filmy, seriály a hudba, vrátane streamov z ľubovoľného doplnku</description>
 		<disclaimer lang="en_GB"></disclaimer>
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
