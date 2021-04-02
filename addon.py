@@ -72,7 +72,7 @@ def list_items(selGroup, nbrLines):
                 li.setArt({ "fanart" : line["fanart"].strip() })
                 li.setProperty('IsPlayable', 'true')
                 command = []
-                command.append((lang(30008), "XBMC.RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(idx)+")"))
+                command.append((lang(30008), "RunPlugin(plugin://plugin.video.last_played?menu=remove&id="+str(idx)+")"))
                 if line["file"][:6]=="plugin":
                     command.append((lang(30031)+line["source"], "PlayMedia(" + line["file"] + ")"))
                 li.addContextMenuItems(command)
