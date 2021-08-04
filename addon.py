@@ -16,7 +16,6 @@ except ImportError:
 addon = xbmcaddon.Addon()
 addon_handle = int(sys.argv[1])
 args = parse_qs(sys.argv[2][1:])
-xbmc.log(str(args),3)
 menu = args.get('menu', None)
 try: list_size = int(addon.getSetting('list_size'))
 except Exception: list_size=0
