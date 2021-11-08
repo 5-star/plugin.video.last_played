@@ -81,7 +81,7 @@ def list_items(selGroup, nbrLines):
             idx = idx + 1
         f.close()
         if single_list == "true" and nbr == 0:
-            li = ListItem(lang(30030))
+            li = xbmcgui.ListItem(lang(30030))
             li.setProperty('IsPlayable', 'false')
             addDirectoryItem(addon_handle, "", li, isFolder = True)
             
