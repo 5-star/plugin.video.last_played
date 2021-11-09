@@ -36,6 +36,7 @@ Installation
  
 Release history
 ---------------
+6.0.3 - Fix error clearing history<br />
 6.0.1 - Fixes<br />
 6.0.0 - Kodi 19<br />
 1.3.1 - Fixes<br />
