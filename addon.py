@@ -30,9 +30,9 @@ lang = addon.getLocalizedString
 if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom_path') != "":
     txtpath = addon.getSetting('custom_path')
 else:
-    txtpath = xbmc.translatePath(addon.getAddonInfo('profile'))
+    txtpath = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
 txtfile = txtpath + "lastPlayed.json"
-imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
+imgPath=xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
 group_by_type=lang(30018)
 
 def url(pQuery):

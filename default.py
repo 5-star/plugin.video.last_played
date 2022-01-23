@@ -20,7 +20,7 @@ enable_debug = addon.getSetting('enable_debug')
 if addon.getSetting('custom_path_enable') == "true" and addon.getSetting('custom_path') != "":
     txtpath = addon.getSetting('custom_path')
 else:
-    txtpath = xbmc.translatePath(addon.getAddonInfo('profile'))
+    txtpath = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
     if not os.path.exists(txtpath):
         os.makedirs(txtpath)
 txtfile = txtpath + "lastPlayed.json"
