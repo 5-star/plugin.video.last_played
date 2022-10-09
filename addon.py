@@ -160,7 +160,7 @@ elif menu[0] == 'showlist':
         lines = json.load(f)
         f.close()
         for line in lines:
-            addDirectoryItem(addon_handle, url({}), ListItem(str(line)), False)
+            addDirectoryItem(addon_handle, url({}), xbmcgui.ListItem(str(line)), False)
         endOfDirectory(addon_handle)
 elif menu[0] == 'deletelist':
     if xbmcvfs.exists(txtfile):
