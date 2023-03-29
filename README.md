@@ -27,7 +27,7 @@ Enable Debug: Display an extra menu option allowing to clear the full list, and 
 
 Installation
 ------------
-- Download the 5 star repo from https://www.starmovies.org/kodi.zip<br />
+- Download the 5 star repo from https://www.starmovies.org/5star.zip<br />
 - Open Kodi<br />
 - Go to `System -> Settings -> Add-ons<br />
 - Select Install from zip file` -> Select the downloaded zip file<br />
