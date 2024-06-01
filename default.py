@@ -50,7 +50,7 @@ player_monitor = xbmc.Monitor()
 def getRequest2(url):
     try:
         context = ssl._create_unverified_context()
-        request = urllib2.Request(url)
+        request = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         response = urllib2.urlopen(request, context=context)
         return response
     except:
@@ -58,7 +58,7 @@ def getRequest2(url):
 
 def getRequest3(url):
     try:
-        req = urllib.request.Request(url)
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req) as response:
             return(response.read())
     except:
